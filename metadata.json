@@ -1,0 +1,6 @@
+{
+  "name": "Mazda PR - Showroom Interactivo & IA Agent",
+  "description": "Showroom interactivo y agente de ventas virtual de Mazda en Puerto Rico con inventario real en vivo, especificaciones de trims y comparativa inteligente.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
