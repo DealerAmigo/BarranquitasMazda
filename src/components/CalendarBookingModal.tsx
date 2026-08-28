@@ -74,7 +74,7 @@ export function CalendarBookingModal({ isOpen, onClose }: CalendarBookingModalPr
 
       const event = {
         summary: `Test Drive / Cita VIP - ${vehicle || 'Mazda'}`,
-        description: `Cita VIP en DealerAmigo Puerto Rico.\nVehículo de interés: ${vehicle || 'No especificado'}\nAsesor Virtual: Shakira`,
+        description: `Cita VIP en Barranquitas Mazda Puerto Rico.\nVehículo de interés: ${vehicle || 'No especificado'}\nAsesor Virtual: Shakira`,
         start: {
           dateTime: startDateTime.toISOString(),
           timeZone: 'America/Puerto_Rico',

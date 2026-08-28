@@ -27,19 +27,32 @@ interface ChatWidgetProps {
 }
 
 export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
       role: 'model',
-      text: '¡Hola! 👋 Mi nombre es **Shakira**, tu asesora virtual de ventas en DealerAmigo Puerto Rico.\n\n¿Estás buscando un modelo específico, un pago mensual cómodo para tu presupuesto o tienes un vehículo para trade-in?'
+      text: '¡Hola! 👋 Mi nombre es **Shakira**, tu asesora virtual de ventas en Barranquitas Mazda Puerto Rico.\n\n¿Estás buscando un modelo específico, un pago mensual cómodo para tu presupuesto o tienes un vehículo para trade-in?'
     }
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // 7-second delayed popup trigger for Shakira
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(prev => {
+        // Only open if user hasn't closed it manually yet
+        return prev ? prev : true;
+      });
+    }, 7000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -81,14 +94,14 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ messages: [...messages, userMessage] })
         })
-          .then(res => Promise.all([res.json(), new Promise(r => setTimeout(r, 1500))]))
+          .then(res => Promise.all([res.json(), new Promise(r => setTimeout(r, 1200))]))
           .then(([data]) => {
             setMessages(prev => [
               ...prev,
               {
                 id: `bot-${Date.now()}`,
                 role: 'model',
-                text: data.text || `¡Excelente elección! El Mazda ${v.model} ${v.trim} (Stock #${v.stock}) está disponible en el lote. Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.\n\n¿Me autorizas a enviar tu información al asesor del dealer para coordinar tu cita o darte seguimiento por WhatsApp/SMS?`
+                text: data.text || `¡Saludos! Qué gusto saludarte. ¡Excelente máquina! El **${v.make || 'Mazda'} ${v.model} ${v.year} (${v.trim})** (Stock #${v.stock}) está disponible en inventario por **$${v.price.toLocaleString()}** (~$${v.estimatedMonthly}/mes*).\n\nCuenta con tracción **i-ACTIV AWD® de serie** y garantía de fábrica.\n\n*Nota: Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.*\n\n¿Te gustaría evaluar el pago con algún pronto inicial o tienes algún auto que desees entregar en trade-in?`
               }
             ]);
           })
@@ -99,7 +112,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
               {
                 id: `bot-${Date.now()}`,
                 role: 'model',
-                text: `¡Excelente elección! El Mazda ${v.model} ${v.trim} cuenta con i-ACTIV AWD® de serie y pago estimado desde $${v.estimatedMonthly}/mes*.\n\n*Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.*\n\n¿Tienes algún auto para trade-in?`
+                text: `¡Saludos! Qué gusto saludarte. El **${v.make || 'Mazda'} ${v.model} ${v.year} (${v.trim})** (Stock #${v.stock}) está disponible con pago estimado desde **$${v.estimatedMonthly}/mes***.\n\n*Nota: Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.*\n\n¿Te gustaría evaluar tu pago mensual con algún pronto o entregar un trade-in?`
               }
             ]);
           })
@@ -129,7 +142,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
               {
                 id: `bot-${Date.now()}`,
                 role: 'model',
-                text: data.text || '¡Con gusto te brindo toda la información! En DealerAmigo contamos con las mejores ofertas y asesoría personalizada para toda la línea Mazda con i-ACTIV AWD® de serie.'
+                text: data.text || '¡Con gusto te brindo toda la información! En Barranquitas Mazda contamos con las mejores ofertas y asesoría personalizada para toda la línea Mazda con i-ACTIV AWD® de serie.'
               }
             ]);
           })
@@ -166,18 +179,65 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
     setIsLoading(true);
 
     // Extract phone numbers or emails if user shared them in chat to automatically record as lead
-    const phoneMatch = textToSend.match(/(?:\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}/);
-    const emailMatch = textToSend.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+    const allUserTexts = [...messages.filter(m => m.role === 'user').map(m => m.text), textToSend];
+    const fullHistoryText = allUserTexts.join(' | ');
+
+    const phoneMatch = textToSend.match(/(?:\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}/) ||
+      fullHistoryText.match(/(?:\+?1[-.\s]?)?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}/);
+    const emailMatch = textToSend.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/) ||
+      fullHistoryText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+    
+    // Look for name candidate across conversation (strictly validated)
+    let detectedName = '';
+    const nonNameWords = ['su', 'si', 'sí', 'sip', 'no', 'ok', 'vale', 'dale', 'hola', 'buenos', 'tardes', 'noches', 'saludos', 'precio', 'mazda', 'ford', 'toyota', 'carro', 'guagua', 'claro', 'gracias', 'cuanto', 'donde', 'pronto', 'trade', 'pago', 'nuevo', 'usado'];
+    for (const msg of allUserTexts) {
+      const nameMatch = msg.match(/(?:me llamo|mi nombre es|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}(?:\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}){0,2})/i);
+      if (nameMatch && nameMatch[1]) {
+        const cand = nameMatch[1].trim();
+        if (!nonNameWords.includes(cand.toLowerCase())) {
+          detectedName = cand;
+          break;
+        }
+      }
+    }
+
+    // Vehicle reference
+    let vehicleRef = '';
+    const referencedMsg = messages.find(m => m.vehicleRef);
+    if (referencedMsg && referencedMsg.vehicleRef) {
+      vehicleRef = `${referencedMsg.vehicleRef.model} (${referencedMsg.vehicleRef.trim}) - Stock #${referencedMsg.vehicleRef.stock}`;
+    }
+
+    // Pronto / Down payment extraction
+    let downPaymentVal: number | undefined;
+    const prontoMatch = fullHistoryText.match(/(?:pronto|down|inicial)?\s*(?:\$|usd)?\s*([0-9]{1,2},?[0-9]{3})/i);
+    if (prontoMatch && prontoMatch[1]) {
+      const parsedPronto = parseInt(prontoMatch[1].replace(/,/g, ''), 10);
+      if (!isNaN(parsedPronto) && parsedPronto >= 500 && parsedPronto <= 50000) {
+        downPaymentVal = parsedPronto;
+      }
+    }
+
+    // Trade-in extraction
+    let tradeInInfo = '';
+    const tradeMatch = fullHistoryText.match(/(?:trade|trade-in|entrego|entregar|tengo un|tengo una)\s+([^,|.]+)/i);
+    if (tradeMatch && tradeMatch[1]) {
+      tradeInInfo = tradeMatch[1].trim();
+    }
+
     if (phoneMatch || emailMatch) {
       try {
         fetch('/api/leads', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name: 'Prospecto Chat Shakira',
+            name: detectedName || 'Prospecto Web',
             phone: phoneMatch ? phoneMatch[0] : '',
             email: emailMatch ? emailMatch[0] : '',
-            notes: `Mensaje en Chat: "${textToSend}"`,
+            vehicle: vehicleRef || 'Consulta General Barranquitas Mazda',
+            downPayment: downPaymentVal,
+            tradeIn: tradeInInfo || undefined,
+            notes: `Conversación con Shakira: "${textToSend}"`,
             source: 'Chat Asesora Shakira'
           })
         }).catch(() => {});
@@ -192,7 +252,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
       });
 
       // Artificial typing delay for more natural UX
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       const data = await response.json();
       setMessages(prev => [
@@ -200,7 +260,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
         {
           id: `bot-${Date.now()}`,
           role: 'model',
-          text: data.text || 'Con gusto te oriento. ¿Qué modelo o pago mensual estás buscando?'
+          text: data.text || '¡Con gusto te oriento! En Barranquitas Mazda estamos a tu orden. ¿Con quién tengo el gusto de hablar?'
         }
       ]);
     } catch (error) {
@@ -210,7 +270,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
         {
           id: `bot-${Date.now()}`,
           role: 'model',
-          text: 'Estoy lista para ayudarte con todo el inventario Mazda en Puerto Rico. ¿Te gustaría consultar una unidad en específico o cotizar un pago?'
+          text: '¡Con muchísimo gusto te oriento! Para brindarte la mejor atención y verificar las opciones en sistema, ¿con quién tengo el gusto de hablar y a qué número de teléfono o WhatsApp te podemos contactar?'
         }
       ]);
     } finally {
@@ -220,6 +280,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
 
   const quickPrompts = [
     '¿Qué modelos tienen disponibles hoy?',
+    '¿Cómo funcionan los 3 motores y la e-CVT de la CX-50 Híbrida?',
     '¿Por qué el CX-30 es mejor que el Corolla Cross o HR-V?',
     '¿Tienen la CX-50 Híbrida?',
     'Quiero cotizar con Trade-in'
@@ -249,7 +310,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
           </div>
           <div>
             <div className="font-black text-xs sm:text-sm text-white flex items-center gap-1.5 uppercase">
-              Shakira • DealerAmigo
+              Shakira • Barranquitas Mazda
               <span className="text-[#00FFFF] text-[9px] font-mono">
                 [EN LÍNEA]
               </span>

@@ -13,7 +13,7 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
   const [inventoryType, setInventoryType] = useState<'NUEVOS' | 'COMPLETO'>('COMPLETO');
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [sortBy, setSortBy] = useState<'price-asc' | 'price-desc' | 'year'>('price-asc');
+  const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'year'>('featured');
   const [cardPhotoIndex, setCardPhotoIndex] = useState<{ [carId: string]: number }>({});
 
   const categories = [
@@ -71,6 +71,29 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
 
       return true;
     }).sort((a, b) => {
+      if (sortBy === 'featured') {
+        // Priority 1: New Mazdas (0 miles)
+        const aIsMazdaNew = a.make?.toLowerCase() === 'mazda' && a.status === 'Nuevo';
+        const bIsMazdaNew = b.make?.toLowerCase() === 'mazda' && b.status === 'Nuevo';
+        if (aIsMazdaNew && !bIsMazdaNew) return -1;
+        if (!aIsMazdaNew && bIsMazdaNew) return 1;
+
+        // Priority 2: Other Mazdas
+        const aIsMazda = a.make?.toLowerCase() === 'mazda';
+        const bIsMazda = b.make?.toLowerCase() === 'mazda';
+        if (aIsMazda && !bIsMazda) return -1;
+        if (!aIsMazda && bIsMazda) return 1;
+
+        // Priority 3: Other New vehicles
+        const aIsNew = a.status === 'Nuevo';
+        const bIsNew = b.status === 'Nuevo';
+        if (aIsNew && !bIsNew) return -1;
+        if (!aIsNew && bIsNew) return 1;
+
+        // Then by Year descending, then price
+        if (b.year !== a.year) return b.year - a.year;
+        return a.price - b.price;
+      }
       if (sortBy === 'price-asc') return a.price - b.price;
       if (sortBy === 'price-desc') return b.price - a.price;
       if (sortBy === 'year') return b.year - a.year;
@@ -173,9 +196,10 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
               onChange={(e) => setSortBy(e.target.value as any)}
               className="bg-[#000000] border border-[#333333] text-[#FFFFFF] rounded px-2 py-1.5 focus:outline-none focus:border-[#00FFFF]"
             >
+              <option value="featured">Mazda Nuevos Primero</option>
+              <option value="year">Año más reciente</option>
               <option value="price-asc">Precio: Menor a Mayor</option>
               <option value="price-desc">Precio: Mayor a Menor</option>
-              <option value="year">Año más reciente</option>
             </select>
           </div>
         </div>
@@ -266,9 +290,16 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
                     PAQUETE: {vehicle.trim.toUpperCase()}
                   </div>
 
-                  <div className="car-price-row">
-                    <span className="car-price">${vehicle.price.toLocaleString()}</span>
-                    <span className="car-monthly">EST. ${vehicle.estimatedMonthly}/MES</span>
+                  <div 
+                    onClick={() => onSelectVehicle(vehicle)}
+                    className="border-t border-b border-[#333333] py-2 px-1 mb-2.5 flex items-center justify-between cursor-pointer hover:border-[#00FFFF] transition-colors group/cardbtn"
+                  >
+                    <span className="text-xs font-mono font-black text-[#00FFFF] uppercase tracking-wide">
+                      VER PRECIO & CUOTA
+                    </span>
+                    <span className="text-[11px] font-mono text-[#AAAAAA] group-hover/cardbtn:text-white font-bold transition-colors">
+                      TARJETA INTERNA ➔
+                    </span>
                   </div>
 
                   <div className="car-specs">

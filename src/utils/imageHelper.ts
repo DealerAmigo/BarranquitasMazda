@@ -18,7 +18,7 @@ export function handleImageError(e: React.SyntheticEvent<HTMLImageElement, Event
     target.src = `/api/image-proxy?url=${encodeURIComponent(originalUrl)}`;
     return;
   }
-  // Fallback to real inventory photo from DealerAmigo
+  // Fallback to real inventory photo from Barranquitas Mazda
   target.src = 'https://fakeimg.pl/800x600/111111/00FFFF?text=FOTO+PENDIENTE';
 }
 

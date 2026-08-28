@@ -4,6 +4,7 @@ import { MazdaLogo } from './components/MazdaLogo';
 import { CarModal } from './components/CarModal';
 import { ChatWidget } from './components/ChatWidget';
 import { ComparisonMatrix } from './components/ComparisonMatrix';
+import CX50HybridTechModule from './components/CX50HybridTechModule';
 import { PreQualModal } from './components/PreQualModal';
 import { CalendarBookingModal } from './components/CalendarBookingModal';
 import { Vehicle, INVENTORY } from './data/inventory';
@@ -15,7 +16,8 @@ import {
   Award, 
   ArrowRight,
   Sparkles,
-  Calendar
+  Calendar,
+  MapPin
 } from 'lucide-react';
 
 export default function App() {
@@ -59,7 +61,7 @@ export default function App() {
       {/* Top Notification Bar */}
       <div className="bg-[#000000] border-b border-[#333333] py-2 px-4 text-center text-xs font-bold text-[#888888] flex items-center justify-center gap-2">
         <span className="w-2 h-2 rounded-full bg-[#00FFFF] animate-ping" />
-        <span className="text-[#00FFFF]">SHOWROOM INTERACTIVO - DEALERAMIGO PUERTO RICO</span>
+        <span className="text-[#00FFFF]">SHOWROOM INTERACTIVO - BARRANQUITAS MAZDA PUERTO RICO</span>
         <span className="hidden sm:inline text-[#888888]">• TRACCIÓN i-ACTIV AWD® DE SERIE</span>
       </div>
 
@@ -77,20 +79,34 @@ export default function App() {
           <div className="hidden md:flex items-center gap-6 text-xs uppercase font-bold text-[#888888]">
             <a href="#inventario" className="hover:text-[#00FFFF] transition-colors">Inventario</a>
             <a href="#comparativa" className="hover:text-[#00FFFF] transition-colors">Comparativa</a>
+            <a href="#modulo-tecnico-cx50" className="hover:text-[#00FFFF] transition-colors">Híbrido 3 Motores</a>
             <a href="#tecnologia" className="hover:text-[#00FFFF] transition-colors">Tecnología AWD</a>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <a 
+              href="https://maps.app.goo.gl/77uboxwhn7e2GMRbA" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-[#FF3333] hover:text-white transition-colors flex items-center gap-1.5 group"
+              title="Ubicación Barranquitas Mazda"
+            >
+              <MapPin className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
+              <span className="hidden sm:inline text-[10px] sm:text-xs font-bold tracking-widest uppercase text-[#AAAAAA] group-hover:text-white transition-colors font-mono">
+                Barranquitas
+              </span>
+            </a>
+            
             <button
               onClick={() => setIsCalendarOpen(true)}
-              className="text-[#888888] text-xs font-black uppercase hover:text-[#00FFFF] transition-colors flex items-center gap-1.5 cursor-pointer mr-2"
+              className="text-[#888888] text-xs font-black uppercase hover:text-[#00FFFF] transition-colors flex items-center gap-1.5 cursor-pointer ml-1"
             >
-              <Calendar className="w-3.5 h-3.5" />
+              <Calendar className="w-4 h-4 sm:w-4 sm:h-4" />
               <span className="hidden sm:inline">Agendar Cita</span>
             </button>
             <button
               onClick={() => handleOpenPreQual()}
-              className="bg-[#00FFFF] text-black text-xs font-black uppercase px-4 py-2 hover:bg-[#55FFFF] transition-colors flex items-center gap-1.5 cursor-pointer underline"
+              className="bg-[#00FFFF] text-black text-[10px] sm:text-xs font-black uppercase px-2.5 py-1.5 sm:px-4 sm:py-2 hover:bg-[#55FFFF] transition-colors flex items-center gap-1 sm:gap-1.5 cursor-pointer underline whitespace-nowrap ml-1"
             >
               <Calculator className="w-3.5 h-3.5" />
               <span>Precalificar</span>
@@ -107,6 +123,16 @@ export default function App() {
 
       {/* Comparison Matrix Section */}
       <ComparisonMatrix onAskComparison={handleAskComparison} />
+
+      {/* Technical Module: 3-Motor Hybrid System (Mazda CX-50) */}
+      <CX50HybridTechModule 
+        onAskAI={(prompt) => {
+          setExternalTrigger({
+            customPrompt: prompt,
+            timestamp: Date.now()
+          });
+        }} 
+      />
 
       {/* Technology i-ACTIV Section */}
       <section id="tecnologia" className="max-w-[1200px] mx-auto px-4 py-12">
@@ -161,16 +187,16 @@ export default function App() {
         <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-3">
             <div className="w-7 h-7 bg-[#000000] border border-[#00FFFF] flex items-center justify-center text-[#00FFFF] font-black text-xs">
-              DA
+              BM
             </div>
             <div>
-              <span className="font-black text-white">SHOWROOM INTERACTIVO - DEALERAMIGO</span>
-              <p className="text-[10px] text-[#666666]">DealerAmigo Puerto Rico (usadealeramigo.com)</p>
+              <span className="font-black text-white">SHOWROOM INTERACTIVO - BARRANQUITAS MAZDA</span>
+              <p className="text-[10px] text-[#666666]">Barranquitas Mazda Puerto Rico</p>
             </div>
           </div>
 
           <div className="text-center md:text-right text-[11px] space-y-1">
-            <p>© 2026 DealerAmigo Puerto Rico. Todos los derechos reservados.</p>
+            <p>© 2026 Barranquitas Mazda Puerto Rico. Todos los derechos reservados.</p>
             <p className="text-[#666666]">Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.</p>
           </div>
         </div>

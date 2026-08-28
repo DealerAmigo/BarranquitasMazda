@@ -15,7 +15,7 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
         { name: 'Diseño & Materiales', mazda: 'Diseño Kodo, acabados en piel y molduras premium', rival: 'Plásticos duros en versiones de entrada', winner: true },
         { name: 'Seguridad Activa', mazda: 'i-ACTIVSENSE® estándar con Radar MRCC', rival: 'Básico o requiere paquete superior', winner: true },
       ],
-      argument: 'El CX-30 es el único en su categoría que te da AWD de serie en TODOS los niveles y la opción de subir a 250 HP turbo — la competencia te hace escoger entre eficiencia o potencia, o te cobra el AWD aparte.'
+      argument: 'El CX-30 es el único en su categoría que te da AWD de serie en TODOS los niveles con 191 HP y la opción de subir a 250 HP turbo — la competencia te hace escoger entre eficiencia o potencia, o te cobra el AWD aparte.'
     },
     'CX-5': {
       title: 'MAZDA CX-5 (2026) VS SUV MEDIANAS',
@@ -24,18 +24,18 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
       features: [
         { name: 'Pantalla Central Táctil', mazda: 'Hasta 15.6" HD (La más grande en la historia de Mazda)', rival: 'Pantallas estándar de 8" a 10.5"', winner: true },
         { name: 'Control de Clima Inteligente', mazda: 'A/C 100% digital integrado en pantalla', rival: 'Consola tradicional', winner: true },
-        { name: 'Tracción i-ACTIV AWD®', mazda: 'Estándar en todos los trims sin pagar extra', rival: 'Tracción delantera base (FWD)', winner: true },
+        { name: 'Tracción & Motor Calibrado', mazda: '187 HP Skyactiv-G e i-ACTIV AWD® estándar', rival: 'Tracción delantera base (FWD)', winner: true },
         { name: 'Refinamiento Interior', mazda: 'Sensación de vehículo de lujo europeo superior', rival: 'Enfoque utilitario', winner: true },
       ],
-      argument: 'El CX-5 2026 es un vehículo completamente nuevo. Contra RAV4 o CR-V, Mazda compite en refinamiento superior, calidad de marcha Zoom-Zoom y una interfaz tecnológica de 15.6".'
+      argument: 'El CX-5 2026 es un vehículo completamente rediseñado con motor 2.5L de 187 HP e i-ACTIV AWD® de serie. Contra RAV4 o CR-V, Mazda destaca en calidad de marcha Zoom-Zoom, insonorización y una interfaz tecnológica de 15.6".'
     },
     'CX-50': {
       title: 'MAZDA CX-50 VS SUV DE AVENTURA',
       mazdaTitle: 'Mazda CX-50 Gasolina / Híbrida',
       rivalTitle: 'Subaru Outback / Ford Bronco Sport',
       features: [
-        { name: 'Eficiencia Híbrida', mazda: '38 MPG Combinado con tracción e-AWD', rival: '~25-31 MPG en Outback tradicional', winner: true },
-        { name: 'Potencia & Torque', mazda: '219 HP Híbrido / 256 HP Turbo', rival: 'Bronco Sport 3-Cyl base con menos torque', winner: true },
+        { name: 'Eficiencia Híbrida', mazda: '38 MPG Combinado con tracción e-AWD', rival: '~25-31 MPG en Outback / Bronco tradicional', winner: true },
+        { name: 'Opciones de Potencia', mazda: '187 HP (Gasolina) / 219 HP (Híbrido) / 256 HP (Turbo)', rival: 'Bronco Sport 3-Cil base con menor torque y refinamiento', winner: true },
         { name: 'Modos Mi-Drive', mazda: 'Normal / Sport / Off-Road / Remolque', rival: 'Modos limitados según versión', winner: true },
         { name: 'Compuerta Trasera', mazda: 'Al ras del piso para deslizar carga pesada', rival: 'Escalón pronunciado', winner: true },
       ],
@@ -103,37 +103,43 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
         </div>
 
         {/* Comparison Table */}
-        <div className="overflow-x-auto border border-[#333333] rounded mb-6">
-          <table className="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr className="bg-[#111111] border-b border-[#333333]">
-                <th className="p-3.5 text-[#888888] font-bold w-1/3">CARACTERÍSTICA</th>
-                <th className="p-3.5 text-[#00FFFF] font-black w-1/3 bg-[#00FFFF]/5 border-l border-r border-[#333333]">
-                  {currentComp.mazdaTitle.toUpperCase()}
-                </th>
-                <th className="p-3.5 text-[#888888] font-bold w-1/3">{currentComp.rivalTitle.toUpperCase()}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#222222]">
-              {currentComp.features.map((feat, idx) => (
-                <tr key={idx} className="hover:bg-[#111111] transition-colors">
-                  <td className="p-3.5 font-bold text-[#FFFFFF]">{feat.name}</td>
-                  <td className="p-3.5 bg-[#00FFFF]/5 border-l border-r border-[#333333] text-white">
-                    <div className="flex items-start gap-2">
-                      <Check className="w-4 h-4 text-[#00FFFF] shrink-0 mt-0.5" />
-                      <span className="font-bold">{feat.mazda}</span>
-                    </div>
-                  </td>
-                  <td className="p-3.5 text-[#888888]">
-                    <div className="flex items-start gap-2">
-                      <X className="w-4 h-4 text-[#666666] shrink-0 mt-0.5" />
-                      <span>{feat.rival}</span>
-                    </div>
-                  </td>
+        <div className="relative border border-[#333333] rounded mb-6 overflow-hidden">
+          <div className="sm:hidden bg-[#111111] px-3 py-1.5 text-[10px] text-[#00FFFF] font-mono border-b border-[#333333] flex items-center justify-between">
+            <span>⇄ DESLIZA PARA COMPARAR</span>
+            <span className="text-[#888888]">100% AWD DE SERIE</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs min-w-[580px]">
+              <thead>
+                <tr className="bg-[#111111] border-b border-[#333333]">
+                  <th className="p-3.5 text-[#888888] font-bold w-[28%]">CARACTERÍSTICA</th>
+                  <th className="p-3.5 text-[#00FFFF] font-black w-[36%] bg-[#00FFFF]/5 border-l border-r border-[#333333]">
+                    {currentComp.mazdaTitle.toUpperCase()}
+                  </th>
+                  <th className="p-3.5 text-[#888888] font-bold w-[36%]">{currentComp.rivalTitle.toUpperCase()}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-[#222222]">
+                {currentComp.features.map((feat, idx) => (
+                  <tr key={idx} className="hover:bg-[#111111] transition-colors">
+                    <td className="p-3.5 font-bold text-[#FFFFFF] whitespace-nowrap">{feat.name}</td>
+                    <td className="p-3.5 bg-[#00FFFF]/5 border-l border-r border-[#333333] text-white">
+                      <div className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#00FFFF] shrink-0 mt-0.5" />
+                        <span className="font-bold">{feat.mazda}</span>
+                      </div>
+                    </td>
+                    <td className="p-3.5 text-[#888888]">
+                      <div className="flex items-start gap-2">
+                        <X className="w-4 h-4 text-[#666666] shrink-0 mt-0.5" />
+                        <span>{feat.rival}</span>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Summary Footer */}
