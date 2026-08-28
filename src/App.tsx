@@ -4,7 +4,6 @@ import { MazdaLogo } from './components/MazdaLogo';
 import { CarModal } from './components/CarModal';
 import { ChatWidget } from './components/ChatWidget';
 import { ComparisonMatrix } from './components/ComparisonMatrix';
-import CX50HybridTechModule from './components/CX50HybridTechModule';
 import { PreQualModal } from './components/PreQualModal';
 import { CalendarBookingModal } from './components/CalendarBookingModal';
 import { Vehicle, INVENTORY } from './data/inventory';
@@ -79,7 +78,6 @@ export default function App() {
           <div className="hidden md:flex items-center gap-6 text-xs uppercase font-bold text-[#888888]">
             <a href="#inventario" className="hover:text-[#00FFFF] transition-colors">Inventario</a>
             <a href="#comparativa" className="hover:text-[#00FFFF] transition-colors">Comparativa</a>
-            <a href="#modulo-tecnico-cx50" className="hover:text-[#00FFFF] transition-colors">Híbrido 3 Motores</a>
             <a href="#tecnologia" className="hover:text-[#00FFFF] transition-colors">Tecnología AWD</a>
           </div>
 
@@ -123,16 +121,6 @@ export default function App() {
 
       {/* Comparison Matrix Section */}
       <ComparisonMatrix onAskComparison={handleAskComparison} />
-
-      {/* Technical Module: 3-Motor Hybrid System (Mazda CX-50) */}
-      <CX50HybridTechModule 
-        onAskAI={(prompt) => {
-          setExternalTrigger({
-            customPrompt: prompt,
-            timestamp: Date.now()
-          });
-        }} 
-      />
 
       {/* Technology i-ACTIV Section */}
       <section id="tecnologia" className="max-w-[1200px] mx-auto px-4 py-12">

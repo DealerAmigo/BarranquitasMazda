@@ -280,7 +280,6 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
 
   const quickPrompts = [
     '¿Qué modelos tienen disponibles hoy?',
-    '¿Cómo funcionan los 3 motores y la e-CVT de la CX-50 Híbrida?',
     '¿Por qué el CX-30 es mejor que el Corolla Cross o HR-V?',
     '¿Tienen la CX-50 Híbrida?',
     'Quiero cotizar con Trade-in'

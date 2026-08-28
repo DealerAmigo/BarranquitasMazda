@@ -105,12 +105,7 @@ Regla de oro: i-ACTIV AWD® es DE SERIE en TODOS los trims de TODOS los modelos 
    - Posicionamiento: Más ancha, mayor despeje, selector Mi-Drive (Normal, Sport, Off-Road, Remolque). Compuerta trasera al ras del piso para deslizar carga.
    - Motor Gasolina Base: 2.5L con 187 HP (Select, Preferred, Premium, Meridian Edition).
    - Motor Turbo: 2.5L Turbo con 256 HP / 320 lb-ft y arrastre de 3,500 lbs (2.5 Turbo, Turbo Meridian, Turbo Premium Plus). ¡SIGUE DISPONIBLE en 2026!
-   - CX-50 Hybrid (Módulo Técnico - Sistema Híbrido de 3 Motores & e-CVT):
-     • Transmisión e-CVT: Utiliza una transmisión e-CVT (Transmisión Electrónica Continuamente Variable) de engranajes planetarios que combina la fuerza del motor de gasolina y los motores eléctricos. Es sumamente suave, no da tirones, no usa bandas tradicionales de fricción y maximiza el ahorro hasta 38 MPG combinado con 219 HP.
-     • Sistema de 3 Motores Eléctricos (Motores-Generadores / MG): La tracción integral inteligente e-AWD cuenta con 3 motores eléctricos individuales que impulsan y regeneran energía al frenar para recargar la batería:
-       - MG1 (Motor-Generador 1 - Delantero): Motor de arranque para encender el motor de gasolina y generador principal que envía electricidad a la batería híbrida.
-       - MG2 (Motor-Generador 2 - Delantero): Motor eléctrico de tracción principal en el eje delantero. Mueve el auto en modo 100% eléctrico a bajas velocidades y asiste al motor de gasolina al acelerar a fondo para dar más potencia.
-       - MGR (Motor-Generador Trasero): Ubicado de forma independiente en el eje trasero. Otorga tracción eléctrica (e-AWD) a las ruedas traseras automáticamente al detectar pérdida de agarre, en curvas cerradas o al arrancar en pendientes.
+   - CX-50 Hybrid: 2.5L electrificado + 3 motores eléctricos con 219 HP combinados, tracción e-AWD inteligente y 38 MPG combinado (Hybrid Preferred, Hybrid Premium, Hybrid Premium Plus).
 
 4. MAZDA CX-70 2025-2026 (SUV 2 Filas Premium / 5 Pasajeros):
    - Plataforma grande de tracción trasera (Rear-biased AWD) y motor 6 en línea longitudinal.
@@ -286,26 +281,6 @@ function generateSmartFallback(lastMsg: string, allMessages: any[] = []): string
   // Power / HP / Caballos de fuerza inquiry
   if (/^(hp\??|caballos\??|potencia\??|motores\??|que motor tiene\??)$/i.test(q) || q.includes('caballos de fuerza') || (q.includes('hp') && (q.includes('cuant') || q.includes('tien')))) {
     return `¡Con mucho gusto te detallo la potencia de la línea Mazda 2026! 🏎️\n\n- **Mazda CX-30 2026**: **191 HP** (2.5L Gasolina) / **250 HP** (2.5L Turbo).\n- **Mazda CX-5 2026**: **187 HP** (2.5L Skyactiv-G rediseñado).\n- **Mazda CX-50 2026**:\n  • **187 HP** (2.5L Gasolina Estándar)\n  • **219 HP** (2.5L Híbrida Combinada - 38 MPG)\n  • **227 HP - 256 HP** (2.5L Turbo con hasta 320 lb-ft)\n- **Mazda CX-70 & CX-90**: **280 HP a 340 HP** (3.3L Turbo 6 en Línea) / **323 HP** (PHEV Enchufable).\n\n¿De cuál de estos modelos te gustaría conocer detalles o coordinar una prueba de manejo?`;
-  }
-
-  // CX-50 Hybrid Technical Module (e-CVT / 3 Motores Eléctricos / MG1 / MG2 / MGR)
-  if (
-    q.includes('cvt') || 
-    q.includes('e-cvt') || 
-    q.includes('ecvt') || 
-    q.includes('3 motor') || 
-    q.includes('tres motor') || 
-    q.includes('mg1') || 
-    q.includes('mg2') || 
-    q.includes('mgr') || 
-    q.includes('engranaje') || 
-    (q.includes('hibrid') && (q.includes('transmision') || q.includes('como funciona') || q.includes('motor generador')))
-  ) {
-    if (q.includes('cvt') || q.includes('e-cvt') || q.includes('ecvt') || q.includes('transmision')) {
-      return `¡Excelente pregunta técnica! ⚙️\n\n**¿La Mazda CX-50 Híbrida es CVT?**\n**Sí.** Utiliza una transmisión **e-CVT (Transmisión Electrónica Continuamente Variable)**. A diferencia de una CVT tradicional de banda o polea de fricción, esta usa un sistema de **engranajes planetarios** que combina la fuerza del motor de gasolina y los motores eléctricos. Es sumamente suave, no da tirones, no sufre por desgaste de correas y maximiza el ahorro hasta **38 MPG combinado**.\n\n¿Te gustaría saber cómo interactúan sus 3 motores eléctricos (MG1, MG2 y MGR) o agendar una prueba de manejo?`;
-    }
-    
-    return `¡Te explico con todo detalle la ingeniería del sistema híbrido de la **Mazda CX-50 Hybrid 2026**! ⚡🏎️\n\n**¿Por qué tiene 3 motores eléctricos?**\nEl sistema de tracción integral inteligente (**e-AWD**) se compone de tres motores eléctricos individuales (Motores-Generadores / MG) que impulsan el auto y regeneran energía al frenar:\n\n1. **MG1 (Delantero)**: Funciona como el motor de arranque para encender el motor de gasolina y actúa como el generador principal que envía electricidad a la batería híbrida.\n2. **MG2 (Delantero)**: Es el motor eléctrico de tracción principal en el eje delantero. Mueve el auto en modo 100% eléctrico a bajas velocidades y asiste al motor de gasolina al acelerar a fondo para dar más potencia (**219 HP combinados**).\n3. **MGR (Trasero)**: Está ubicado de forma independiente en el eje de atrás. Su función es dar tracción eléctrica instantánea a las ruedas traseras de manera automática cuando detecta pérdida de agarre, en curvas cerradas o al arrancar en pendientes.\n\nTodo esto acoplado a una transmisión **e-CVT de engranajes planetarios**.\n\n¿Te gustaría coordinar una cita para sentir la respuesta inmediata y suavidad de la CX-50 Híbrida?`;
   }
 
   // 1. CX-50 specifically (Adventure / Hybrid / Turbo) - Must be checked BEFORE CX-5
