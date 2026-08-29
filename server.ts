@@ -36,88 +36,50 @@ function getAI(): GoogleGenAI | null {
 
 const MAZDA_SYSTEM_PROMPT = `
 [IDENTIDAD DE LA ASESORA]
-Tu nombre es Shakira. Eres la Ejecutiva de Ventas virtual y asesora principal de Barranquitas Mazda Puerto Rico, especializada en toda la línea Mazda y en el nuevo Mazda CX-5 2026.
-Representas la tecnología inteligente de Barranquitas Mazda en Puerto Rico.
+Tu nombre es Shakira. Eres la Ejecutiva de Ventas virtual y asesora principal de DealerAmigo Puerto Rico y Barranquitas Mazda (usadealeramigo.com).
+Representas la tecnología inteligente de la plataforma "DealerAmigo" para Barranquitas Mazda.
 
 [PERSONALIDAD Y TONO]
-- Directa, transparente, empática, cálida, sin arrogancia ni rodeos corporativos. Enfocada en resultados antes que en teoría.
-- Nunca suenes defensiva ni intentes tapar el sol con la mano. Hablas en español boricua natural, educado y cercano (usando términos como "carro", "guagua", "pronto", "trade-in", "pago cómodo", "tablilla", "montarte").
-- La honestidad genera confianza; evadirla genera desconfianza.
+- Eres cálida, empática, profesional, dinámica y conocedora del mercado automotriz en Puerto Rico.
+- Hablas en español boricua natural y educado (utilizando términos adecuados como "carro", "guagua", "pronto", "trade-in", "pago cómodo", "tablilla", "montarte").
+- Tu objetivo principal es orientar al comprador, resolver dudas con transparencia y agendar una cita o prueba de manejo con el dealer correspondiente.
+- NUNCA pierdas el hilo de la conversación. Mantén siempre en mente el vehículo específico que el cliente está evaluando (ej. CX-70, CX-50, CX-5, CX-30, CX-90) y continúa la conversación sobre ese mismo auto.
+
+[REGLAS CLAVE]
+1. Saludo inicial: Cuando comiences, preséntate como Shakira y haz una pregunta abierta para entender si el cliente busca un pago mensual específico, un modelo en particular o si tiene trade-in.
+2. Manejo de pagos: Siempre que se hable de financiamiento o cuotas mensuales, incluye la nota: "Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera."
+3. Respuestas negativas sobre pronto o trade-in: Si el cliente responde "No", "Sin pronto", "Cero" o "No tengo trade-in", NUNCA reinicies el saludo. Explica que en Barranquitas Mazda se puede financiar al 100% (cero pronto) o con bonos del dealer, y solicita amablemente su nombre y WhatsApp/teléfono para prepararle la corrida detallada de pagos.
+4. Disponibilidad: NUNCA digas simplemente que un vehículo no existe. Pide nombre y teléfono para que un asesor valide en el sistema si la unidad está en inventario o si hay una equivalente recién llegada.
+5. Consentimiento: Antes de registrar formalmente el lead, solicita la autorización: "¿Me autorizas a enviar tu información al asesor del dealer para coordinar tu cita o darte seguimiento por WhatsApp/SMS?"
 
 [MANEJO DE OBJECIONES Y RESEÑAS REALES: MAZDA CX-5 2026 (CONSUMER REPORTS / CRÍTICAS)]
 Consumer Reports publicó en junio 2026 el artículo ("5 Reasons to Avoid the 2026 Mazda CX-5 Now") señalando 4 puntos críticos del nuevo rediseño.
-REGLA DE ORO: Si el cliente menciona esta reseña, artículos de Consumer Reports, o cualquiera de estas críticas: NUNCA las ignores, ni las niegues, ni las minimices. Reconócelas primero con total franqueza, da contexto honesto y redirige hacia las fortalezas reales del vehículo y las alternativas:
-
-1. Pantalla táctil / Eliminación de perillas físicas de A/C y volumen:
-   - Reconocimiento: "Totalmente de acuerdo contigo en que la transición a pantalla táctil tiene una curva de aprendizaje importante y a muchos conductores les gustaba tener las perillas físicas de antes."
-   - Contexto real: "Mazda apostó a una pantalla panorámica de alta resolución (hasta 15.6\") con interfaz fluida y comandos de voz rápidos. Al momento de la prueba de manejo te enseño exactamente cómo configurar los accesos directos para que lo manejes con los ojos cerrados."
-
-2. Materiales del interior / Plásticos duros:
-   - Reconocimiento: "Tienes toda la razón en que se siente diferente y Consumer Reports lo señaló con justicia: Mazda usó materiales más duraderos y resistentes en ciertas zonas en lugar de tanto acolchado."
-   - Redirección de valor: "Donde no escatimaron fue en la ingeniería de manejo, el chasis y la seguridad de serie. Es un carro pensado para aguantar el uso diario y mantener el valor de reventa alto."
-
+REGLA DE ORO: Si el cliente menciona esta reseña o críticas: NUNCA las ignores ni las niegues. Reconócelas con franqueza, da contexto honesto y redirige hacia las fortalezas reales (seguridad i-Activsense de serie, chasis, confiabilidad del motor 2.5L):
+1. Pantalla táctil / Eliminación de perillas físicas de A/C:
+   - Reconocimiento: "Totalmente de acuerdo en que la transición a pantalla táctil tiene una curva de aprendizaje importante."
+   - Contexto: Pantalla panorámica fluida de hasta 15.6" con comandos de voz rápidos.
+2. Materiales del interior / Plásticos:
+   - Reconocimiento: "Mazda usó materiales más duraderos y resistentes en ciertas zonas en lugar de tanto acolchado."
+   - Redirección: Máxima durabilidad, seguridad y alto valor de reventa.
 3. Sonido del motor al acelerar fuerte:
-   - Reconocimiento: "El motor Skyactiv-G 2.5L atmosférico ciertamente se deja escuchar en altas revoluciones cuando le exiges un rebase o aceleración a fondo."
-   - Redirección de valor: "La gran ventaja es que no es un motor experimental: es una mecánica superprobada de 187 HP, libre de complicaciones de turbos pequeños forzados, y con una transmisión automática tradicional de 6 velocidades muy duradera y económica de mantener."
-
+   - Reconocimiento: "El motor Skyactiv-G 2.5L se deja escuchar en altas revoluciones."
+   - Redirección: Es un motor súper probado y confiable de 187 HP sin turbos forzados y con transmisión automática tradicional duradera.
 4. Sin opción híbrida para 2026 (llega en 2027):
-   - Transparencia honesta: "Es totalmente cierto: el CX-5 Híbrido no llega hasta el modelo 2027. Si tu prioridad número 1 es el rendimiento híbrido inmediato hoy mismo, tenemos la **Mazda CX-50 Hybrid (38 MPG combinado)** disponible ya en inventario físico. Pero si prefieres el espacio y chasis del CX-5 a gasolina, no tienes que esperar."
+   - Transparencia: "El CX-5 Híbrido llega en el 2027. Si tu prioridad es híbrido hoy mismo, tenemos la **Mazda CX-50 Hybrid (38 MPG combinado)** disponible para entrega inmediata."
 
-5. Confiabilidad y Seguridad comprobadas (Puntos fuertes reconocidos por CR):
-   - A diferencia de plataformas completamente nuevas, el CX-5 2026 mantiene motor 2.5L (187 HP) y transmisión superconfiables y probados.
-   - Cuenta con una suspensión optimizada que mejora aún más el manejo y estabilidad en curvas.
-   - Paquete de seguridad i-Activsense® DE SERIE en todos los trims (frenado automático de emergencia, detección de peatones, alerta y corrección de carril, alerta de tráfico cruzado).
-
-[ESTRATEGIA CONVERSACIONAL DE 3 ETAPAS]
-
-ETAPA 1: SALUDO, RESPUESTA COMPLETA Y ASESORÍA EXPERTA
-- Responde primero la duda o crítica con honestidad y datos reales de inventario, precios y pagos (~$X/mes*).
-- Si preguntan si el precio es negociable: Explica con franqueza que los gerentes de ventas tienen flexibilidad con bonos de fábrica, incentivos y la mejor tasación de trade-in de PR.
-- Cierra con una pregunta abierta sobre sus prioridades reales (manejo, espacio, trade-in o presupuesto). NO pidas nombre/teléfono en la primera respuesta antes de aportar valor.
-
-ETAPA 2: LEVANTAMIENTO PROGRESIVO DE DATOS PARA LA FICHA / SHEET
-- Recopila naturalmente: Modelo/Trim de interés, Trade-in (marca/año/deuda), Pronto/Pago deseado, Nombre del cliente, Teléfono/WhatsApp y Consentimiento.
-
-ETAPA 3: CONFIRMACIÓN Y CIERRE VIP
-- Confirma que su solicitud y propuesta personalizada están registradas para el gerente de ventas y valida si prefiere la prueba de manejo hoy o el fin de semana.
-
-[MANEJO DE PAGOS Y TRANSPARENCIA]
-- Siempre que se hable de financiamiento o cuotas mensuales, incluye la nota: "Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera."
-
-[FUENTE DE VERDAD - BASE DE CONOCIMIENTO MAZDA 2025-2026 (PUERTO RICO)]
+[FUENTE DE VERDAD - BASE DE CONOCIMIENTO MAZDA 2025-2026]
 Regla de oro: i-ACTIV AWD® es DE SERIE en TODOS los trims de TODOS los modelos SUV de Mazda (CX-30, CX-5, CX-50, CX-70, CX-90). Nunca es opcional ni se cobra aparte.
 
 1. MAZDA CX-30 2026 (SUV Compacta):
-   - Motor Base: Skyactiv-G 2.5L 4 Cilindros con 191 HP / 186 lb-ft de torque (Trims: 2.5 S, Select Sport, Preferred, Carbon Edition, Premium).
-   - Motor Turbo: Skyactiv-G 2.5L Turbo con 250 HP / 320 lb-ft (Trims: Carbon Turbo, 2.5 Turbo Premium, 2.5 Turbo Premium Plus).
-   - Tracción: i-ACTIV AWD® DE SERIE en todos los niveles (HR-V y Corolla Cross cobran extra por AWD o son FWD base con menos potencia).
-   - Colores destacados: Polymetal Gray exclusivo en Carbon Edition (asientos en piel roja o negra).
-
-2. MAZDA CX-5 2026 (SUV Mediana Familiar - Rediseño Completo):
-   - Motor: Skyactiv-G 2.5L 4 Cilindros con 187 HP / 186 lb-ft.
-   - ¡IMPORTANTE 2026!: Sin opción turbo para 2026 (descontinuada; si buscan potencia turbo, redirigir a CX-50 Turbo de 256 HP).
-   - Tecnología: Pantalla táctil de hasta 15.6" (la más grande en la historia de Mazda) que absorbió el 100% de los controles físicos de A/C (ya no hay perillas de clima). Cluster digital 10.25".
-   - Espacio: Wheelbase estirado para mayor espacio en la fila trasera.
-   - Trims: 2.5S, 2.5S Select, 2.5S Preferred, 2.5S Premium, 2.5S Premium Plus.
-   - Híbrido: No disponible en 2026 (llega en 2027; ofrecer CX-50 Hybrid si buscan híbrido hoy).
-
-3. MAZDA CX-50 2026 (SUV Aventura / Outdoor):
-   - Posicionamiento: Más ancha, mayor despeje, selector Mi-Drive (Normal, Sport, Off-Road, Remolque). Compuerta trasera al ras del piso para deslizar carga.
-   - Motor Gasolina Base: 2.5L con 187 HP (Select, Preferred, Premium, Meridian Edition).
-   - Motor Turbo: 2.5L Turbo con 256 HP / 320 lb-ft y arrastre de 3,500 lbs (2.5 Turbo, Turbo Meridian, Turbo Premium Plus). ¡SIGUE DISPONIBLE en 2026!
-   - CX-50 Hybrid: 2.5L electrificado + 3 motores eléctricos con 219 HP combinados, tracción e-AWD inteligente y 38 MPG combinado (Hybrid Preferred, Hybrid Premium, Hybrid Premium Plus).
-
-4. MAZDA CX-70 2025-2026 (SUV 2 Filas Premium / 5 Pasajeros):
-   - Plataforma grande de tracción trasera (Rear-biased AWD) y motor 6 en línea longitudinal.
-   - Motor Gasolina: 3.3L Turbo 6 en Línea + M-Hybrid 48V de serie (280 HP / 332 lb-ft en Preferred/Premium/Premium Plus; 340 HP en Turbo S Premium/Turbo S Premium Plus). Remolque de hasta 5,000 lbs.
-   - CX-70 PHEV: 2.5L Plug-in Hybrid con 323 HP combinados, 26 mi modo 100% eléctrico.
-   - ¡REGLA CRÍTICA CX-70!: NUNCA lleva asientos capitán en 2da fila — siempre es banco de 3 plazas fijo para 5 pasajeros. Interior Piel Nappa Windsor Tan disponible en S Premium Plus y PHEV SC Plus.
-
-5. MAZDA CX-90 2025-2026 (SUV Insignia 3 Filas / 6-8 Pasajeros):
-   - Motor Gasolina: 3.3L Turbo 6 en Línea + M-Hybrid 48V (280 HP en Select/Preferred/Premium Sport/Premium Plus; 340 HP en Turbo S Premium/Turbo S Premium Plus).
-   - CX-90 PHEV: 323 HP combinados (Preferred, Premium Sport, Premium Plus).
-   - ¡REGLA CRÍTICA CX-90 PHEV!: El CX-90 PHEV NUNCA ofrece interior Tan Nappa (solo Negro o Blanco/Gris). La piel Nappa Tan solo está disponible en la versión gasolina Turbo S Premium Plus con madera Maple genuina.
-   - Configuración: 3 filas con banquetas o Captain's Chairs opcionales en 2da fila.
+   - Motor 2.5L 191 HP (Opción Turbo 250 HP). AWD de serie. Desde $35,995 (~$435/mes*).
+2. MAZDA CX-5 2026 (SUV Mediana Rediseñada):
+   - Motor Skyactiv-G 2.5L 187 HP. Pantalla hasta 15.6 pulgadas. Desde $40,995 (~$615/mes*).
+3. MAZDA CX-50 2026 (SUV Outdoor / Aventura):
+   - 3 motores: Gasolina 2.5L (187 HP), Hybrid (219 HP combinados, 38 MPG) y Turbo (256 HP / 320 lb-ft). Stock #601273 / Stock #594411.
+4. MAZDA CX-70 2025-2026 (SUV 5 Pasajeros Premium):
+   - Motor 3.3L Turbo 6 en Línea (280 HP a 340 HP) y PHEV (323 HP). Piel Nappa, AWD predictivo. Stock #594294 (~$1,005/mes*).
+5. MAZDA CX-90 2025-2026 (SUV 3 Filas / 7-8 Pasajeros):
+   - Motor 3.3L Turbo 6 en Línea (hasta 340 HP) y PHEV. Stock #596193 (~$975/mes*).
 
 [REGLAS ESTRICTAS SOBRE NOMBRES DE USUARIO]
 1. NUNCA asumas ni inventes que palabras cortas, afirmaciones o errores tipográficos (como "Su", "Si", "Sip", "No", "Ok", "Dale", "Pronto", "Trade in", "Financiamiento", "Precio", etc.) son el nombre de la persona.
@@ -175,8 +137,46 @@ function extractNameFromText(text: string, isAnsweringNameQuestion: boolean = fa
   return null;
 }
 
+function detectActiveVehicle(allMessages: any[]): { name: string; price?: number; payment?: number; stock?: string } {
+  // Scan messages in reverse to find the most recently discussed vehicle
+  for (let i = allMessages.length - 1; i >= 0; i--) {
+    const text = (allMessages[i].text || '').toLowerCase();
+    
+    if (/\b(cx[-_ ]?70)\b/i.test(text)) {
+      return { name: 'Mazda CX-70 2026 3.3 Turbo S', price: 66995, payment: 1005, stock: '594294' };
+    }
+    if (/\b(cx[-_ ]?50)\b/i.test(text)) {
+      return { name: 'Mazda CX-50 2026 (Híbrida / Turbo)', price: 48995, payment: 735, stock: '601273' };
+    }
+    if (/\b(cx[-_ ]?90)\b/i.test(text)) {
+      return { name: 'Mazda CX-90 2026 Premium Sport (3 Filas)', price: 64995, payment: 975, stock: '596193' };
+    }
+    if (/\b(cx[-_ ]?5)\b/i.test(text)) {
+      return { name: 'Mazda CX-5 2026 Rediseñada', price: 40995, payment: 615, stock: '610595' };
+    }
+    if (/\b(cx[-_ ]?30)\b/i.test(text)) {
+      return { name: 'Mazda CX-30 2026 2.5 S', price: 35995, payment: 435, stock: '601276' };
+    }
+    if (text.includes('tacoma')) {
+      return { name: 'Toyota Tacoma', price: 35995, payment: 540, stock: '616425' };
+    }
+    if (text.includes('tundra')) {
+      return { name: 'Toyota Tundra 4WD', price: 39995, payment: 600, stock: '601809' };
+    }
+    if (text.includes('corolla')) {
+      return { name: 'Toyota Corolla LE', price: 23995, payment: 360, stock: '607879' };
+    }
+    if (text.includes('mazda3') || text.includes('mazda 3')) {
+      return { name: 'Mazda3 Hatchback 2.5 S', price: 31995, payment: 480, stock: '569426' };
+    }
+  }
+
+  return { name: 'tu Mazda de interés' };
+}
+
 function generateSmartFallback(lastMsg: string, allMessages: any[] = []): string {
   const q = (lastMsg || '').trim().toLowerCase();
+  const activeVehicle = detectActiveVehicle(allMessages);
   
   // Find last assistant message to understand conversational context
   let lastAssistantMsg = '';
@@ -213,34 +213,49 @@ function generateSmartFallback(lastMsg: string, allMessages: any[] = []): string
   const currentEmailMatch = lastMsg.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
   const currentName = extractNameFromText(lastMsg, askedForName);
 
-  // If user provided phone number
+  // If user provided phone number or email
   if (currentPhoneMatch || currentEmailMatch) {
     const contactInfo = currentPhoneMatch ? currentPhoneMatch[0] : currentEmailMatch![0];
     if (previousName || currentName) {
       const name = currentName || previousName;
-      return `¡Muchísimas gracias, **${name}**! 📱 He anotado tu contacto (**${contactInfo}**) en la ficha de solicitud.\n\nEl gerente de ventas de Barranquitas Mazda te contactará para presentarte la propuesta formal con los números exactos para tu negocio. ¿Te gustaría coordinar la prueba de manejo para hoy o para el fin de semana?`;
+      return `¡Muchísimas gracias, **${name}**! 📱 He anotado tu contacto (**${contactInfo}**) en la ficha de solicitud para la **${activeVehicle.name}**.\n\nEl asesor de ventas de Barranquitas Mazda te contactará con la corrida exacta y opciones de financiamiento. ¿Me autorizas a enviar tu información al asesor para coordinar tu cita o darte seguimiento por WhatsApp/SMS?`;
     }
-    return `¡Excelente! He recibido tu número (**${contactInfo}**) 📱.\n\nPara completar tu ficha y que el gerente prepare la cotización a tu nombre, **¿con quién tengo el gusto y placer de hablar?**`;
+    return `¡Excelente! He recibido tu número (**${contactInfo}**) 📱.\n\nPara completar tu ficha de la **${activeVehicle.name}** y que el asesor prepare la cotización formal a tu nombre, **¿con quién tengo el gusto y placer de hablar?**`;
   }
 
   // If user legitimately provided their name
   if (currentName && !q.includes('?')) {
     if (previousPhone) {
-      return `¡Un verdadero placer, **${currentName}**! Ya tu ficha está completa con tu contacto. El gerente de ventas te estará escribiendo por WhatsApp o llamando con todos los detalles y ofertas especiales. ¿Tienes algún auto para trade-in o prefieres aportar pronto inicial?`;
+      return `¡Un verdadero placer, **${currentName}**! Ya tu ficha está completa con tu contacto para la **${activeVehicle.name}**. El asesor de ventas te estará escribiendo por WhatsApp o llamando con todos los detalles y ofertas especiales. ¿Me autorizas a coordinar tu cita en Barranquitas Mazda?`;
     }
-    return `¡Mucho gusto, **${currentName}**! Un placer atenderte. Para enviarte la cotización detallada y coordinar tu cita, ¿a qué número de teléfono o WhatsApp te podemos escribir?`;
+    return `¡Mucho gusto, **${currentName}**! Un placer atenderte. Para enviarte la cotización detallada de la **${activeVehicle.name}** y coordinar tu cita, ¿a qué número de WhatsApp o teléfono te podemos escribir?`;
+  }
+
+  // Negative responses: "no", "nop", "ninguno", "nada", "cero", "sin pronto", "no tengo trade in", "no tengo", etc.
+  const isNegative = /^(no|nop|no tengo|ninguno|ninguna|nada|cero|sin pronto|cero pronto|sin trade in|no trade in|no tengo trade in|no tengo trade-in|no tengo pronto|0|ningun pronto)$/i.test(q) || 
+                     (q.startsWith('no ') && q.length < 28) ||
+                     (q.includes('no tengo') && q.length < 35);
+  
+  if (isNegative) {
+    if (lastAssistantMsg.includes('pronto') || lastAssistantMsg.includes('trade-in') || lastAssistantMsg.includes('financiamiento') || lastAssistantMsg.includes('pago')) {
+      return `¡Entendido perfectamente! No te preocupes en lo absoluto. En Barranquitas Mazda trabajamos opciones de financiamiento al 100% (cero pronto) y contamos con bonos especiales de fábrica para que el pago mensual de la **${activeVehicle.name}** te quede lo más cómodo posible.\n\n*Nota: Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.*\n\nPara prepararte la corrida bancaria oficial con las mejores tasas de interés, **¿a qué número de WhatsApp o teléfono te podemos enviar la cotización detallada?**`;
+    }
+    if (lastAssistantMsg.includes('prueba de manejo') || lastAssistantMsg.includes('cita') || lastAssistantMsg.includes('dealer')) {
+      return `¡Sin problema! Si prefieres evaluar los números primero desde la comodidad de tu casa, podemos enviarte la propuesta digital y fotos detalladas de la **${activeVehicle.name}** por WhatsApp. ¿A qué número te la podemos enviar?`;
+    }
+    return `¡Entendido! Cuéntame, ¿hay algún otro modelo de nuestro inventario que te llame la atención o prefieres que evaluemos opciones de financiamiento al 100% para la **${activeVehicle.name}**?`;
   }
 
   // Affirmations & Typos of "Si" ("su", "si", "sí", "sip", "yes", "claro", "dale", "seguro", "ok", "me gustaria", "me interesa", "por favor")
   const isAffirmative = /^(su|si|sí|sip|sii|siip|yes|ok|okay|claro|dale|seguro|por favor|me gustaria|me gustaría|me interesa|quiero evaluar|evaluar|correcto|exacto)$/i.test(q);
   if (isAffirmative) {
     if (lastAssistantMsg.includes('financiamiento') || lastAssistantMsg.includes('pronto') || lastAssistantMsg.includes('trade-in') || lastAssistantMsg.includes('pago')) {
-      return `¡Excelente! 🤝 Para prepararte la corrida y el cálculo de pago mensual más cómodo con el banco o cooperativa:\n\n¿Cuentas con algún pronto inicial en mente o tienes algún vehículo que quieras entregar en trade-in? (O si gustas, indícame tu número de WhatsApp o teléfono para que un asesor te pase los números exactos).`;
+      return `¡Excelente! 🤝 Para prepararte la corrida y el cálculo de pago mensual más cómodo con el banco o cooperativa para la **${activeVehicle.name}**:\n\n¿Cuentas con algún pronto inicial en mente o tienes algún vehículo que quieras entregar en trade-in? (O si gustas, indícame tu número de WhatsApp o teléfono para que un asesor te pase los números exactos).`;
     }
     if (lastAssistantMsg.includes('prueba de manejo') || lastAssistantMsg.includes('cita') || lastAssistantMsg.includes('dealer')) {
-      return `¡Perfecto! Nos encantará recibirte en Barranquitas Mazda. ¿Prefieres pasar hoy o coordinar para el fin de semana? ¿A qué número de WhatsApp o teléfono te podemos contactar para reservarte el espacio?`;
+      return `¡Perfecto! Nos encantará recibirte en Barranquitas Mazda para tu prueba de manejo de la **${activeVehicle.name}**. ¿Prefieres pasar hoy o coordinar para el fin de semana? ¿A qué número de WhatsApp o teléfono te podemos contactar para reservarte el espacio?`;
     }
-    return `¡Excelente! Para prepararte la mejor propuesta en Barranquitas Mazda, ¿te gustaría evaluar algún modelo en particular o cotizar un pago mensual con pronto o trade-in?`;
+    return `¡Excelente! Para prepararte la mejor propuesta en Barranquitas Mazda para la **${activeVehicle.name}**, ¿a qué número de WhatsApp o teléfono te podemos enviar los números y opciones?`;
   }
 
   // Specific Stock Number or VIN inquiry
@@ -260,7 +275,7 @@ function generateSmartFallback(lastMsg: string, allMessages: any[] = []): string
 
   // Negotiable / Discounts / Best Price / Offers
   if (q.includes('negociable') || q.includes('descuento') || q.includes('rebaja') || q.includes('mejor precio') || q.includes('oferta') || q.includes('bono') || q.includes('menos') || q.includes('cuanto es lo ultimo') || q.includes('lo menos')) {
-    return `¡Te entiendo perfectamente! En Barranquitas Mazda siempre buscamos darte la mano para que consigas el mejor negocio posible y un pago que te quede súper cómodo sin apretarte el bolsillo. 🤝\n\nNuestros gerentes de ventas cuentan con flexibilidad en bonos especiales de fábrica, incentivos de temporada y la mejor tasación de Puerto Rico para tu trade-in.\n\nPara que podamos estructurar la mejor propuesta de pago para ti, ¿cuentas con algún pronto inicial en mente o tienes un auto para entregar en trade-in?`;
+    return `¡Te entiendo perfectamente! En Barranquitas Mazda siempre buscamos darte la mano para que consigas el mejor negocio posible y un pago que te quede súper cómodo sin apretarte el bolsillo. 🤝\n\nNuestros gerentes de ventas cuentan con flexibilidad en bonos especiales de fábrica, incentivos de temporada y la mejor tasación de Puerto Rico para tu trade-in.\n\nPara que podamos estructurar la mejor propuesta de pago para la **${activeVehicle.name}**, ¿cuentas con algún pronto inicial en mente o tienes un auto para entregar en trade-in?`;
   }
 
   // Consumer Reports / Críticas / Reseñas / Objeciones específicas del CX-5 2026
@@ -331,17 +346,12 @@ function generateSmartFallback(lastMsg: string, allMessages: any[] = []): string
 
   // Trade-in / Financiamiento / Pagos / Pronto
   if (q.includes('trade') || q.includes('pago') || q.includes('financ') || q.includes('precalific') || q.includes('cuota') || q.includes('interes') || q.includes('credito') || q.includes('crédito') || q.includes('banco') || q.includes('cooperativa')) {
-    return `¡Con muchísimo gusto te oriento! En Barranquitas Mazda trabajamos con todos los bancos y cooperativas locales en Puerto Rico. Aceptamos tu Trade-In con o sin deuda con la mejor tasación de la isla para lograr un pago mensual que se adapte a tu presupuesto.\n\n*Recuerda: Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.*\n\n¿Tienes algún auto en mente para trade-in o qué cuota mensual tienes como meta?`;
+    return `¡Con muchísimo gusto te oriento! En Barranquitas Mazda trabajamos con todos los bancos y cooperativas locales en Puerto Rico. Aceptamos tu Trade-In con o sin deuda con la mejor tasación de la isla para lograr un pago mensual que se adapte a tu presupuesto para la **${activeVehicle.name}**.\n\n*Recuerda: Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.*\n\n¿Tienes algún auto en mente para trade-in o qué cuota mensual tienes como meta?`;
   }
 
   // Cita / Ubicacion / Telefono / WhatsApp / Contacto
   if (q.includes('cita') || q.includes('ubicacion') || q.includes('direcci') || q.includes('dealer') || q.includes('whatsapp') || q.includes('telefono') || q.includes('probar') || q.includes('test drive')) {
-    return `¡Excelente! Me encantará coordinar tu cita VIP y prueba de manejo en el dealer. Para preparar tu ficha de atención personalizada, **¿con quién tengo el gusto de hablar y a qué número de WhatsApp o teléfono te podemos contactar?**`;
-  }
-
-  // Affirmations (Sí, claro, ok, dale)
-  if (q === 'si' || q === 'sí' || q === 'ok' || q === 'claro' || q === 'dale' || q === 'seguro' || q === 'yes') {
-    return `¡Perfecto! Para preparar tu cotización formal con el gerente y tener tu ficha lista, **¿con quién tengo el gusto de hablar y cuál es tu número de WhatsApp o teléfono?**`;
+    return `¡Excelente! Me encantará coordinar tu cita VIP y prueba de manejo de la **${activeVehicle.name}** en Barranquitas Mazda. Para preparar tu ficha de atención personalizada, **¿con quién tengo el gusto de hablar y a qué número de WhatsApp o teléfono te podemos contactar?**`;
   }
 
   // Default fallback for general queries
@@ -537,14 +547,40 @@ async function startServer() {
       }
 
       try {
-        const geminiMessages = messages.map((msg: any) => ({
-          role: msg.role === 'user' ? 'user' : 'model',
-          parts: [{ text: msg.text }]
-        }));
+        // Ensure Gemini contents start with a user message and alternate roles properly
+        const geminiContents: Array<{ role: string; parts: Array<{ text: string }> }> = [];
+        
+        let startIndex = 0;
+        while (startIndex < messages.length && messages[startIndex].role !== 'user') {
+          startIndex++;
+        }
+
+        for (let i = startIndex; i < messages.length; i++) {
+          const msg = messages[i];
+          const role = msg.role === 'user' ? 'user' : 'model';
+          const text = (msg.text || '').trim();
+          if (!text) continue;
+
+          if (geminiContents.length > 0 && geminiContents[geminiContents.length - 1].role === role) {
+            geminiContents[geminiContents.length - 1].parts[0].text += `\n\n${text}`;
+          } else {
+            geminiContents.push({
+              role,
+              parts: [{ text }]
+            });
+          }
+        }
+
+        if (geminiContents.length === 0) {
+          geminiContents.push({
+            role: 'user',
+            parts: [{ text: lastUserMsg || 'Hola' }]
+          });
+        }
 
         const response = await ai.models.generateContent({
           model: 'gemini-2.5-flash',
-          contents: geminiMessages,
+          contents: geminiContents,
           config: {
             systemInstruction: MAZDA_SYSTEM_PROMPT,
             temperature: 0.7,
@@ -554,8 +590,8 @@ async function startServer() {
         if (response.text) {
           return res.json({ text: response.text });
         }
-      } catch (geminiError) {
-        // Handled silently with domain-expert fallback
+      } catch (geminiError: any) {
+        console.warn("Gemini API generation error, falling back to smart fallback:", geminiError?.message || geminiError);
       }
 
       return res.json({ text: generateSmartFallback(lastUserMsg, messages) });
