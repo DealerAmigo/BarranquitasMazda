@@ -3,33 +3,38 @@ import React from 'react';
 export const MazdaLogo = ({ className = "" }: { className?: string }) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" className="w-[175px] h-[58px] sm:w-[215px] sm:h-[70px]" preserveAspectRatio="xMidYMid meet">
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        viewBox="0 0 240 75" 
+        className="w-[220px] h-[65px] sm:w-[320px] sm:h-[85px] md:w-[380px] md:h-[95px] max-w-full drop-shadow-[0_2px_10px_rgba(0,255,255,0.15)]" 
+        preserveAspectRatio="xMidYMid meet"
+      >
         {/* Stylized MAZDA background text */}
-        <g stroke="#9CA3AF" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M 20,60 L 20,25 L 45,60 L 70,25 L 70,60" />
-          <path d="M 75,60 L 95,25 L 115,60" />
-          <path d="M 125,25 L 150,25 L 125,60 L 150,60" />
-          <path d="M 160,25 L 160,60 M 160,25 C 190,25 190,60 160,60" />
-          <path d="M 195,60 L 215,25 L 235,60" />
+        <g stroke="#CCCCCC" strokeWidth="2.8" fill="none" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M 20,58 L 20,22 L 45,58 L 70,22 L 70,58" />
+          <path d="M 75,58 L 95,22 L 115,58" />
+          <path d="M 125,22 L 150,22 L 125,58 L 150,58" />
+          <path d="M 160,22 L 160,58 M 160,22 C 190,22 190,58 160,58" />
+          <path d="M 195,58 L 215,22 L 235,58" />
         </g>
         
         {/* Bird Wings above AZ */}
-        <g strokeWidth="4" fill="none" strokeLinecap="round">
-          <path d="M 75,18 C 95,22 105,30 110,38" stroke="#4B5563" />
-          <path d="M 110,38 C 115,30 135,16 155,16" stroke="#48DFE6" />
+        <g strokeWidth="4.5" fill="none" strokeLinecap="round">
+          <path d="M 75,16 C 95,20 105,28 110,36" stroke="#555555" />
+          <path d="M 110,36 C 115,28 135,14 155,14" stroke="#00FFFF" />
         </g>
 
         {/* BARRANQUITAS text overlapping */}
         <text 
           x="127" y="47" 
           fontFamily="system-ui, -apple-system, sans-serif" 
-          fontSize="16" 
+          fontSize="17" 
           fontWeight="900" 
-          fill="#48DFE6" 
+          fill="#00FFFF" 
           stroke="#000000"
-          strokeWidth="3"
+          strokeWidth="3.5"
           textAnchor="middle" 
-          letterSpacing="1.5"
+          letterSpacing="1.8"
           paintOrder="stroke fill"
         >
           BARRANQUITAS

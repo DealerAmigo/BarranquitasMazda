@@ -24,7 +24,6 @@ export default function App() {
   const [isPreQualOpen, setIsPreQualOpen] = useState<boolean>(false);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
-  const [inventoryType, setInventoryType] = useState<'NUEVOS' | 'COMPLETO'>('COMPLETO');
   const [preQualVehicle, setPreQualVehicle] = useState<Vehicle | null>(null);
   const [externalTrigger, setExternalTrigger] = useState<{ vehicle?: Vehicle | null; customPrompt?: string; timestamp: number } | null>(null);
 
@@ -73,79 +72,65 @@ export default function App() {
         <span className="hidden md:inline text-[#888888]">• TRACCIÓN i-ACTIV AWD® DE SERIE</span>
       </div>
 
-      {/* Navigation Header (Main Tier) */}
-      <nav className="sticky top-0 z-30 bg-[#000000]/95 backdrop-blur-md border-b border-[#222222]">
-        <div className="max-w-[1200px] mx-auto px-4 h-18 sm:h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsMenuOpen(true)}
-              className="bg-[#111111] hover:bg-[#222222] border border-[#333333] hover:border-[#00FFFF] text-white hover:text-[#00FFFF] p-2 sm:p-2.5 rounded transition-all cursor-pointer flex items-center gap-2"
-              aria-label="Abrir menú de categorías"
-              title="Menú de Categorías, AWD y Comparativa"
-            >
-              <Menu className="w-5 h-5 text-[#00FFFF]" />
-              <span className="font-black text-xs uppercase tracking-wider hidden sm:inline">MENÚ</span>
-            </button>
+      {/* Navigation Header (Main Brand Bar) */}
+      <header className="sticky top-0 z-30 bg-[#000000]/95 backdrop-blur-md border-b border-[#222222]">
+        <div className="max-w-[1200px] mx-auto px-3 sm:px-4 py-2 sm:py-3 relative flex items-center justify-between">
+          {/* Menu Button positioned nicely */}
+          <button
+            onClick={() => setIsMenuOpen(true)}
+            className="bg-[#111111] hover:bg-[#222222] border border-[#333333] hover:border-[#00FFFF] text-white hover:text-[#00FFFF] p-2 sm:p-2.5 rounded transition-all cursor-pointer flex items-center gap-1.5 shrink-0 z-10"
+            aria-label="Abrir menú de categorías"
+            title="Menú de Categorías, AWD y Comparativa"
+          >
+            <Menu className="w-5 h-5 text-[#00FFFF]" />
+            <span className="font-black text-xs sm:text-sm uppercase tracking-wider hidden sm:inline">MENÚ</span>
+          </button>
 
-            <MazdaLogo />
+          {/* Fully Centered Prominent Logo for Mobile and Desktop */}
+          <div className="flex-1 flex items-center justify-center px-2">
+            <MazdaLogo className="w-full max-w-[280px] sm:max-w-[380px] md:max-w-[440px]" />
           </div>
 
-          <div className="hidden lg:flex items-center gap-8 text-sm uppercase font-black text-[#AAAAAA]">
+          {/* Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-6 text-xs uppercase font-black text-[#AAAAAA] shrink-0 z-10">
             <a href="#inventario" className="hover:text-[#00FFFF] transition-colors">Inventario</a>
             <a href="#comparativa" className="hover:text-[#00FFFF] transition-colors">Comparativa</a>
             <a href="#tecnologia" className="hover:text-[#00FFFF] transition-colors">Tecnología AWD</a>
-          </div>
+          </nav>
 
-          {/* Direct CTA on Desktop */}
-          <div className="hidden sm:flex items-center gap-3">
-            <a 
-              href="https://maps.app.goo.gl/77uboxwhn7e2GMRbA" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="bg-[#111111] hover:bg-[#1a1a1a] border border-[#333333] hover:border-[#FF3333] text-[#CCCCCC] hover:text-white px-3 py-2 rounded text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 transition-all"
-              title="Ubicación Barranquitas Mazda"
-            >
-              <MapPin className="w-4 h-4 text-[#FF3333]" />
-              <span>Barranquitas, PR</span>
-            </a>
-            
-            <a
-              href="https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-[#00FFFF] text-black text-xs sm:text-sm font-black uppercase px-4 py-2 hover:bg-[#55FFFF] transition-colors flex items-center gap-1.5 cursor-pointer underline whitespace-nowrap rounded shadow-md"
-            >
-              <Calculator className="w-4 h-4" />
-              <span>Precalificar</span>
-            </a>
-          </div>
+          {/* Dummy spacer on mobile to keep logo perfectly centered */}
+          <div className="w-[38px] sm:hidden pointer-events-none" />
         </div>
 
-        {/* Subheader Toolbar (Always visible & especially clean on mobile/tablet) */}
-        <div className="bg-[#0a0a0a] border-t border-[#222222] py-2 px-4 sm:hidden">
-          <div className="max-w-[1200px] mx-auto flex items-center justify-between gap-2">
+        {/* Subheader Toolbar: Balanced Centered Actions for Mobile & Desktop */}
+        <div className="bg-[#0a0a0a] border-t border-[#222222] py-2 px-3 sm:px-4">
+          <div className="max-w-[1200px] mx-auto flex items-center justify-center gap-2 sm:gap-4">
+            {/* Location Pin Button */}
             <a 
               href="https://maps.app.goo.gl/77uboxwhn7e2GMRbA" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex-1 bg-[#111111] border border-[#333333] text-[#DDDDDD] hover:text-white py-2 px-2.5 rounded text-xs font-bold uppercase flex items-center justify-center gap-1.5 transition-colors"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 bg-[#141414] hover:bg-[#1f1f1f] border border-[#333333] hover:border-[#FF3333] text-[#CCCCCC] hover:text-white px-3 sm:px-6 py-2.5 rounded text-xs sm:text-sm font-bold uppercase tracking-wider transition-all text-center shadow"
+              title="Ver ubicación en Google Maps"
             >
               <MapPin className="w-4 h-4 text-[#FF3333] shrink-0" />
               <span className="truncate">Barranquitas, PR</span>
             </a>
 
+            {/* Pre-qualification CTA Button */}
             <a
               href="https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 bg-[#00FFFF] text-black py-2 px-3 rounded text-xs font-black uppercase flex items-center justify-center gap-1.5 hover:bg-[#55FFFF] transition-colors shadow"
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 sm:gap-2 bg-[#00FFFF] hover:bg-[#55FFFF] text-black px-3 sm:px-8 py-2.5 rounded text-xs sm:text-sm font-black uppercase tracking-wide transition-all shadow-md hover:shadow-[#00FFFF]/20 cursor-pointer underline text-center"
+              title="Solicitud de Crédito Online"
             >
               <Calculator className="w-4 h-4 shrink-0" />
-              <span className="truncate underline">Precalificar</span>
+              <span className="truncate">Precalificar</span>
             </a>
           </div>
         </div>
-      </nav>
+      </header>
 
       {/* Main Inventory Grid Section */}
       <InventoryGrid 
@@ -153,8 +138,6 @@ export default function App() {
         onAskAI={(vehicle) => handleAskAboutVehicle(vehicle)}
         selectedCategory={selectedCategory}
         onSelectCategory={(cat) => setSelectedCategory(cat)}
-        inventoryType={inventoryType}
-        onSelectInventoryType={(type) => setInventoryType(type)}
       />
 
       {/* Comparison Matrix Section */}
@@ -254,16 +237,10 @@ export default function App() {
       <HamburgerMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        onSelectCategory={(catId, invType) => {
-          setSelectedCategory(catId);
-          if (invType) {
-            setInventoryType(invType);
-          }
-        }}
+        onSelectCategory={(catId) => setSelectedCategory(catId)}
         onOpenPreQual={() => handleOpenPreQual()}
         onOpenChat={handleOpenChat}
         currentCategory={selectedCategory}
-        currentInventoryType={inventoryType}
       />
 
       {/* Floating AI Sales Agent Chatbot */}

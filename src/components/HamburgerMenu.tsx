@@ -18,11 +18,10 @@ import { MazdaLogo } from './MazdaLogo';
 interface HamburgerMenuProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectCategory: (catId: string, invType?: 'NUEVOS' | 'COMPLETO') => void;
+  onSelectCategory: (catId: string) => void;
   onOpenPreQual: () => void;
   onOpenChat: () => void;
   currentCategory: string;
-  currentInventoryType: 'NUEVOS' | 'COMPLETO';
 }
 
 export function HamburgerMenu({
@@ -31,14 +30,13 @@ export function HamburgerMenu({
   onSelectCategory,
   onOpenPreQual,
   onOpenChat,
-  currentCategory,
-  currentInventoryType
+  currentCategory
 }: HamburgerMenuProps) {
   if (!isOpen) return null;
 
   const categories = [
     { id: 'ALL', label: 'Todos los Vehículos', icon: Car },
-    { id: 'NUEVOS_DIRECT', label: 'Solo Nuevos (0 Millas)', icon: Sparkles, type: 'NUEVOS' as const },
+    { id: 'NUEVOS', label: 'Nuevos (0 Millas)', icon: Sparkles },
     { id: 'MAZDA', label: 'Mazda (CX-5, CX-30, CX-50, CX-70, CX-90...)', icon: Car },
     { id: 'TOYOTA', label: 'Toyota (Tacoma, Tundra, RAV4, Corolla...)', icon: Car },
     { id: 'SUVS', label: 'SUVs & Crossovers', icon: Car },
@@ -48,17 +46,13 @@ export function HamburgerMenu({
     { id: 'USADOS', label: 'Usados Certificados', icon: Tag },
   ];
 
-  const handleCategoryClick = (catId: string, type?: 'NUEVOS' | 'COMPLETO') => {
-    if (catId === 'NUEVOS_DIRECT') {
-      onSelectCategory('ALL', 'NUEVOS');
-    } else {
-      onSelectCategory(catId, type || 'COMPLETO');
-    }
+  const handleCategoryClick = (catId: string) => {
+    onSelectCategory(catId);
     onClose();
     // Scroll to inventory
     const el = document.getElementById('inventario');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
@@ -156,15 +150,12 @@ export function HamburgerMenu({
             <div className="space-y-1.5">
               {categories.map((cat) => {
                 const IconComponent = cat.icon;
-                const isSelected = 
-                  cat.id === 'NUEVOS_DIRECT' 
-                    ? currentInventoryType === 'NUEVOS' 
-                    : currentCategory === cat.id && currentInventoryType === 'COMPLETO';
+                const isSelected = currentCategory === cat.id;
 
                 return (
                   <button
                     key={cat.id}
-                    onClick={() => handleCategoryClick(cat.id, cat.type)}
+                    onClick={() => handleCategoryClick(cat.id)}
                     className={`w-full text-left p-3 rounded text-sm font-bold flex items-center justify-between transition-all cursor-pointer border ${
                       isSelected
                         ? 'bg-[#00FFFF] text-black border-[#00FFFF] font-black'
