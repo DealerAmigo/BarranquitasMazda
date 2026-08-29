@@ -9,6 +9,10 @@
     --text-muted: #999999;
   }
 
+  html {
+    font-size: 17px;
+  }
+
   body {
     background-color: var(--bg-black);
     color: var(--text-white);
@@ -16,6 +20,8 @@
     margin: 0;
     padding: 0;
     overflow-x: hidden;
+    font-size: 1.05rem;
+    line-height: 1.5;
   }
 
   h1, h2, h3 {
@@ -27,8 +33,8 @@
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: #000000;
@@ -43,7 +49,7 @@
 .inventory-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 8px;
+  gap: 12px;
 }
 @media (min-width: 640px) {
   .inventory-grid {
@@ -88,13 +94,13 @@
 
 .car-img {
   width: 100%;
-  height: 220px;
+  height: 230px;
   object-fit: cover;
   background-color: #111111;
 }
 
 .car-content {
-  padding: 10px;
+  padding: 14px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -102,7 +108,7 @@
 
 .car-badge {
   color: #00FFFF;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   margin-bottom: 6px;
   font-family: 'Arial Black', Arial, sans-serif;
@@ -110,16 +116,16 @@
 }
 
 .car-title {
-  font-size: 1.1rem;
-  margin: 0 0 6px 0;
+  font-size: 1.25rem;
+  margin: 0 0 8px 0;
   color: #FFFFFF;
   font-family: 'Arial Black', Arial, sans-serif;
   font-weight: 900;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 @media (min-width: 640px) {
   .car-title {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
   }
 }
 
@@ -127,27 +133,27 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   border-bottom: 1px solid #333333;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
   flex-wrap: wrap; /* Allows wrapping if narrow */
-  gap: 4px;
+  gap: 6px;
 }
 
 .car-price {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: #00FFFF;
   font-family: 'Arial Black', Arial, sans-serif;
   font-weight: 900;
 }
 @media (min-width: 640px) {
   .car-price {
-    font-size: 1.4rem;
+    font-size: 1.65rem;
   }
 }
 
 .car-monthly {
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   color: #FFFFFF;
   font-family: 'Arial Black', Arial, sans-serif;
   font-weight: 900;
@@ -156,10 +162,10 @@
 .car-specs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  font-size: 0.8rem;
+  gap: 6px;
+  font-size: 0.95rem;
   color: #FFFFFF;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-family: Arial, sans-serif;
   font-weight: bold;
 }
@@ -169,10 +175,10 @@
   background-color: #00FFFF;
   color: #000000;
   border: none;
-  padding: 14px;
+  padding: 14px 16px;
   border-radius: 0;
   font-family: 'Arial Black', Arial, sans-serif;
-  font-size: 1rem;
+  font-size: 1.05rem;
   text-transform: uppercase;
   text-decoration: underline;
   cursor: pointer;

@@ -62,51 +62,51 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-3 sm:p-4 border-b border-[#333333] flex justify-between items-start bg-[#000000]">
+        <div className="p-4 sm:p-5 border-b border-[#333333] flex justify-between items-start bg-[#000000]">
           <div>
-            <div className="flex items-center gap-2 mb-1 flex-wrap">
-              <span className="bg-[#00FFFF] text-black text-xs font-black px-2 py-0.5 rounded">
+            <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+              <span className="bg-[#00FFFF] text-black text-xs sm:text-sm font-black px-2.5 py-0.5 rounded">
                 AÑO {vehicle.year}
               </span>
-              <span className="text-[#00FFFF] text-xs font-black uppercase">
+              <span className="text-[#00FFFF] text-xs sm:text-sm font-black uppercase">
                 {vehicle.status}
               </span>
-              <span className="text-xs text-[#888888] font-mono">
+              <span className="text-xs sm:text-sm text-[#AAAAAA] font-mono font-bold">
                 STOCK: #{vehicle.stock}
               </span>
               {photoList.length > 0 && (
-                <span className="inline-flex items-center gap-1 text-[11px] text-[#00FFFF] border border-[#333333] px-2 py-0.5 rounded font-mono">
+                <span className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-[#00FFFF] border border-[#333333] px-2.5 py-0.5 rounded font-mono font-bold">
                   {isLoadingPhotos ? (
                     <>
-                      <Loader2 className="w-3 h-3 animate-spin text-[#00FFFF]" />
-                      <span>Cargando galería completa...</span>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin text-[#00FFFF]" />
+                      <span>Cargando galería...</span>
                     </>
                   ) : (
                     <>
-                      <ImageIcon className="w-3 h-3 text-[#00FFFF]" /> 
+                      <ImageIcon className="w-3.5 h-3.5 text-[#00FFFF]" /> 
                       <span>{photoList.length} FOTOS REALES (HD)</span>
                     </>
                   )}
                 </span>
               )}
             </div>
-            <h2 className="text-xl sm:text-2xl font-black text-white">
+            <h2 className="text-2xl sm:text-3xl font-black text-white">
               {vehicle.year} {vehicle.make ? vehicle.make.toUpperCase() : ''} {vehicle.model.toUpperCase()}
             </h2>
-            <p className="text-xs text-[#00FFFF] font-extrabold uppercase tracking-wide">
+            <p className="text-sm sm:text-base text-[#00FFFF] font-extrabold uppercase tracking-wide">
               PAQUETE EXACTO: {vehicle.trim.toUpperCase()}
             </p>
           </div>
           <button 
             onClick={onClose}
-            className="text-[#888888] hover:text-[#00FFFF] p-1.5 rounded hover:bg-white/5 transition-colors cursor-pointer"
+            className="text-[#AAAAAA] hover:text-[#00FFFF] p-1.5 rounded hover:bg-white/5 transition-colors cursor-pointer"
           >
-            <X className="w-6 h-6" />
+            <X className="w-7 h-7" />
           </button>
         </div>
 
         {/* Content Scrollable */}
-        <div className="p-3 sm:p-4 overflow-y-auto space-y-4">
+        <div className="p-4 sm:p-5 overflow-y-auto space-y-5">
           {/* Gallery Section */}
           <div className="flex flex-col gap-3 sm:gap-4 items-start">
             {/* Main Interactive Carousel */}
@@ -126,36 +126,36 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
                   <>
                     <button
                       onClick={handlePrevPhoto}
-                      className="absolute left-2.5 top-1/2 -translate-y-1/2 bg-black/80 hover:bg-[#00FFFF] hover:text-black text-white p-2 rounded-full border border-[#333333] transition-all cursor-pointer"
+                      className="absolute left-2.5 top-1/2 -translate-y-1/2 bg-black/80 hover:bg-[#00FFFF] hover:text-black text-white p-2.5 rounded-full border border-[#333333] transition-all cursor-pointer"
                       title="Foto anterior"
                     >
-                      <ChevronLeft className="w-5 h-5" />
+                      <ChevronLeft className="w-6 h-6" />
                     </button>
                     <button
                       onClick={handleNextPhoto}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-black/80 hover:bg-[#00FFFF] hover:text-black text-white p-2 rounded-full border border-[#333333] transition-all cursor-pointer"
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 bg-black/80 hover:bg-[#00FFFF] hover:text-black text-white p-2.5 rounded-full border border-[#333333] transition-all cursor-pointer"
                       title="Foto siguiente"
                     >
-                      <ChevronRight className="w-5 h-5" />
+                      <ChevronRight className="w-6 h-6" />
                     </button>
                   </>
                 )}
 
                 {/* Counter Badge */}
-                <div className="absolute bottom-3 right-3 bg-black/85 border border-[#333333] text-white text-xs px-2.5 py-1 rounded font-mono flex items-center gap-1.5">
-                  <ImageIcon className="w-3.5 h-3.5 text-[#00FFFF]" />
+                <div className="absolute bottom-3 right-3 bg-black/85 border border-[#333333] text-white text-xs sm:text-sm px-3 py-1 rounded font-mono font-bold flex items-center gap-1.5">
+                  <ImageIcon className="w-4 h-4 text-[#00FFFF]" />
                   <span>Foto {activePhotoIdx + 1} de {photoList.length}</span>
                 </div>
               </div>
 
               {/* Thumbnails Row */}
               {photoList.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-none">
+                <div className="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none">
                   {photoList.map((thumbUrl, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActivePhotoIdx(idx)}
-                      className={`relative shrink-0 w-16 h-12 rounded overflow-hidden border transition-all cursor-pointer ${
+                      className={`relative shrink-0 w-20 h-14 rounded overflow-hidden border transition-all cursor-pointer ${
                         activePhotoIdx === idx 
                           ? 'border-[#00FFFF] scale-105' 
                           : 'border-[#333333] opacity-60 hover:opacity-100'
@@ -175,54 +175,54 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
             </div>
 
             {/* Quick Price & Purchase Info */}
-            <div className="w-full bg-[#000000] p-3 rounded border border-[#333333] space-y-2">
-              <div className="border-b border-[#333333] pb-2">
-                <span className="text-xs text-[#888888] uppercase block font-bold">Precio Dealer</span>
-                <div className="text-3xl font-black text-[#00FFFF]">
+            <div className="w-full bg-[#000000] p-4 rounded border border-[#333333] space-y-3">
+              <div className="border-b border-[#333333] pb-3">
+                <span className="text-xs sm:text-sm text-[#AAAAAA] uppercase block font-bold">Precio Dealer</span>
+                <div className="text-3xl sm:text-4xl font-black text-[#00FFFF]">
                   ${vehicle.price.toLocaleString()}
                 </div>
-                <div className="text-xs text-[#FFFFFF] mt-1 font-bold">
-                  Cuota estimada desde <span className="text-[#00FFFF]">${vehicle.estimatedMonthly}/mes*</span>
+                <div className="text-sm sm:text-base text-[#FFFFFF] mt-1.5 font-bold">
+                  Cuota estimada desde <span className="text-[#00FFFF] font-black">${vehicle.estimatedMonthly}/mes*</span>
                 </div>
               </div>
 
               {/* Specs List */}
-              <div className="space-y-2 text-xs text-[#FFFFFF]">
-                <div className="flex justify-between py-1 border-b border-[#222222]">
-                  <span className="text-[#888888]">Año Modelo:</span>
+              <div className="space-y-2.5 text-sm text-[#FFFFFF]">
+                <div className="flex justify-between py-1.5 border-b border-[#222222]">
+                  <span className="text-[#AAAAAA]">Año Modelo:</span>
                   <span className="font-bold text-[#00FFFF]">{vehicle.year}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#222222]">
-                  <span className="text-[#888888]">Paquete / Versión:</span>
+                <div className="flex justify-between py-1.5 border-b border-[#222222]">
+                  <span className="text-[#AAAAAA]">Paquete / Versión:</span>
                   <span className="font-bold text-white">{vehicle.trim}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#222222]">
-                  <span className="text-[#888888]">Color Exterior:</span>
+                <div className="flex justify-between py-1.5 border-b border-[#222222]">
+                  <span className="text-[#AAAAAA]">Color Exterior:</span>
                   <span className="font-bold">{vehicle.color}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#222222]">
-                  <span className="text-[#888888]">Millaje:</span>
+                <div className="flex justify-between py-1.5 border-b border-[#222222]">
+                  <span className="text-[#AAAAAA]">Millaje:</span>
                   <span className="font-bold">{vehicle.mileage === 0 ? '0 Mi (Nueva de Fábrica)' : `${vehicle.mileage.toLocaleString()} Millas`}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#222222]">
-                  <span className="text-[#888888]">Tracción:</span>
+                <div className="flex justify-between py-1.5 border-b border-[#222222]">
+                  <span className="text-[#AAAAAA]">Tracción:</span>
                   <span className="font-bold text-[#00FFFF]">{vehicle.specs.drivetrain}</span>
                 </div>
-                <div className="flex justify-between py-1 border-b border-[#222222]">
-                  <span className="text-[#888888]">VIN:</span>
-                  <span className="font-mono text-[10px] text-[#888888]">{vehicle.vin}</span>
+                <div className="flex justify-between py-1.5 border-b border-[#222222]">
+                  <span className="text-[#AAAAAA]">VIN:</span>
+                  <span className="font-mono text-xs text-[#AAAAAA]">{vehicle.vin}</span>
                 </div>
               </div>
 
               {/* Main Button with Exact Underline & Cyan Styling */}
-              <div className={`mt-auto grid gap-2 ${vehicle.url && vehicle.url !== 'N/A' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              <div className={`mt-auto grid gap-2.5 ${vehicle.url && vehicle.url !== 'N/A' ? 'grid-cols-2' : 'grid-cols-1'}`}>
                 <button
                   onClick={() => {
                     onClose();
                     onAskAI(vehicle);
                   }}
                   className="btn-ask-ai"
-                  style={{ marginTop: 0, width: '100%', padding: '12px 4px', fontSize: '0.85rem' }}
+                  style={{ marginTop: 0, width: '100%', padding: '14px 6px', fontSize: '1rem' }}
                 >
                   PREGÚNTAME
                 </button>
@@ -232,7 +232,7 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center bg-transparent border border-[#00FFFF] text-[#00FFFF] font-black uppercase text-center hover:bg-[#00FFFF] hover:text-black transition-colors"
-                    style={{ width: '100%', textDecoration: 'none', fontSize: '0.85rem', padding: '12px 4px' }}
+                    style={{ width: '100%', textDecoration: 'none', fontSize: '1rem', padding: '14px 6px' }}
                   >
                     FICHA 360°
                   </a>
@@ -243,54 +243,54 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
 
           {/* Technical Specs 4-col */}
           <div>
-            <h3 className="text-sm font-black uppercase text-[#00FFFF] mb-3">
+            <h3 className="text-base sm:text-lg font-black uppercase text-[#00FFFF] mb-3.5">
               Especificaciones Técnicas
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div className="bg-[#000000] p-3 rounded border border-[#333333]">
-                <div className="flex items-center gap-1.5 text-[#00FFFF] mb-1">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-sm">
+              <div className="bg-[#000000] p-3.5 rounded border border-[#333333]">
+                <div className="flex items-center gap-2 text-[#00FFFF] mb-1.5">
                   <Zap className="w-4 h-4" />
                   <span className="font-bold">Motor</span>
                 </div>
-                <p className="text-[#FFFFFF]">{vehicle.specs.engine}</p>
+                <p className="text-[#FFFFFF] font-bold">{vehicle.specs.engine}</p>
               </div>
 
-              <div className="bg-[#000000] p-3 rounded border border-[#333333]">
-                <div className="flex items-center gap-1.5 text-[#00FFFF] mb-1">
+              <div className="bg-[#000000] p-3.5 rounded border border-[#333333]">
+                <div className="flex items-center gap-2 text-[#00FFFF] mb-1.5">
                   <Gauge className="w-4 h-4" />
                   <span className="font-bold">Potencia</span>
                 </div>
-                <p className="text-[#FFFFFF]">{vehicle.specs.horsepower}</p>
+                <p className="text-[#FFFFFF] font-bold">{vehicle.specs.horsepower}</p>
               </div>
 
-              <div className="bg-[#000000] p-3 rounded border border-[#333333]">
-                <div className="flex items-center gap-1.5 text-[#00FFFF] mb-1">
+              <div className="bg-[#000000] p-3.5 rounded border border-[#333333]">
+                <div className="flex items-center gap-2 text-[#00FFFF] mb-1.5">
                   <Fuel className="w-4 h-4" />
                   <span className="font-bold">Transmisión</span>
                 </div>
-                <p className="text-[#FFFFFF]">{vehicle.specs.transmission}</p>
+                <p className="text-[#FFFFFF] font-bold">{vehicle.specs.transmission}</p>
               </div>
 
-              <div className="bg-[#000000] p-3 rounded border border-[#333333]">
-                <div className="flex items-center gap-1.5 text-[#00FFFF] mb-1">
+              <div className="bg-[#000000] p-3.5 rounded border border-[#333333]">
+                <div className="flex items-center gap-2 text-[#00FFFF] mb-1.5">
                   <ShieldCheck className="w-4 h-4" />
                   <span className="font-bold">Inspección</span>
                 </div>
-                <p className="text-[#FFFFFF]">115 Puntos Aprobada</p>
+                <p className="text-[#FFFFFF] font-bold">115 Puntos Aprobada</p>
               </div>
             </div>
           </div>
 
           {/* Highlights & Features */}
           <div>
-            <h3 className="text-sm font-black uppercase text-[#00FFFF] mb-3">
+            <h3 className="text-base sm:text-lg font-black uppercase text-[#00FFFF] mb-3.5">
               Equipamiento Destacado
             </h3>
-            <div className="grid sm:grid-cols-2 gap-2.5">
+            <div className="grid sm:grid-cols-2 gap-3">
               {vehicle.highlights.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-xs text-[#FFFFFF] bg-[#000000] p-2.5 rounded border border-[#333333]">
+                <div key={idx} className="flex items-center gap-2.5 text-sm text-[#FFFFFF] bg-[#000000] p-3 rounded border border-[#333333]">
                   <CheckCircle className="w-4 h-4 text-[#00FFFF] shrink-0" />
-                  <span>{item}</span>
+                  <span className="font-bold">{item}</span>
                 </div>
               ))}
             </div>
@@ -298,8 +298,8 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
         </div>
 
         {/* Footer Actions */}
-        <div className="p-4 border-t border-[#333333] bg-[#000000] flex flex-col sm:flex-row gap-3 items-center justify-between">
-          <div className="text-[11px] text-[#888888]">
+        <div className="p-4 sm:p-5 border-t border-[#333333] bg-[#000000] flex flex-col sm:flex-row gap-3.5 items-center justify-between">
+          <div className="text-xs sm:text-sm text-[#AAAAAA] leading-relaxed">
             *Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo y aprobación bancaria.
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
@@ -308,9 +308,9 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
                 href={vehicle.url} 
                 target="_blank" 
                 rel="noreferrer"
-                className="px-4 py-2.5 rounded border border-[#333333] text-xs text-[#FFFFFF] hover:text-[#00FFFF] hover:border-[#00FFFF] transition-colors flex items-center justify-center gap-1.5 font-bold"
+                className="px-5 py-3 rounded border border-[#333333] text-sm text-[#FFFFFF] hover:text-[#00FFFF] hover:border-[#00FFFF] transition-colors flex items-center justify-center gap-2 font-bold"
               >
-                Ficha 360° <ExternalLink className="w-3.5 h-3.5" />
+                Ficha 360° <ExternalLink className="w-4 h-4" />
               </a>
             )}
             <button
@@ -318,7 +318,7 @@ export function CarModal({ vehicle, onClose, onAskAI }: CarModalProps) {
                 onClose();
                 onAskAI(vehicle);
               }}
-              className="bg-[#00FFFF] text-black font-black text-xs uppercase px-5 py-2.5 rounded hover:bg-[#55FFFF] transition-colors flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto underline"
+              className="bg-[#00FFFF] text-black font-black text-sm uppercase px-6 py-3 rounded hover:bg-[#55FFFF] transition-colors flex items-center justify-center gap-2 cursor-pointer w-full sm:w-auto underline"
             >
               PREGÚNTAME
             </button>

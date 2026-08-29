@@ -3,7 +3,7 @@ import React from 'react';
 export const MazdaLogo = ({ className = "" }: { className?: string }) => {
   return (
     <div className={`flex items-center justify-center ${className}`}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" className="w-[150px] h-[50px] sm:w-[180px] sm:h-[60px]" preserveAspectRatio="xMidYMid meet">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 80" className="w-[175px] h-[58px] sm:w-[215px] sm:h-[70px]" preserveAspectRatio="xMidYMid meet">
         {/* Stylized MAZDA background text */}
         <g stroke="#9CA3AF" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
           <path d="M 20,60 L 20,25 L 45,60 L 70,25 L 70,60" />

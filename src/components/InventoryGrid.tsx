@@ -6,12 +6,30 @@ import { handleImageError, getProxyImageUrl } from '../utils/imageHelper';
 interface InventoryGridProps {
   onSelectVehicle: (vehicle: Vehicle) => void;
   onAskAI: (vehicle: Vehicle) => void;
+  selectedCategory?: string;
+  onSelectCategory?: (cat: string) => void;
+  inventoryType?: 'NUEVOS' | 'COMPLETO';
+  onSelectInventoryType?: (type: 'NUEVOS' | 'COMPLETO') => void;
 }
 
-export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) {
+export function InventoryGrid({ 
+  onSelectVehicle, 
+  onAskAI,
+  selectedCategory: propCategory,
+  onSelectCategory: propSetCategory,
+  inventoryType: propInventoryType,
+  onSelectInventoryType: propSetInventoryType
+}: InventoryGridProps) {
   // Default to the 2nd tab "INVENTARIO COMPLETO" as requested
-  const [inventoryType, setInventoryType] = useState<'NUEVOS' | 'COMPLETO'>('COMPLETO');
-  const [selectedCategory, setSelectedCategory] = useState<string>('ALL');
+  const [localInventoryType, setLocalInventoryType] = useState<'NUEVOS' | 'COMPLETO'>('COMPLETO');
+  const [localSelectedCategory, setLocalSelectedCategory] = useState<string>('ALL');
+  
+  const inventoryType = propInventoryType !== undefined ? propInventoryType : localInventoryType;
+  const setInventoryType = propSetInventoryType || setLocalInventoryType;
+
+  const selectedCategory = propCategory !== undefined ? propCategory : localSelectedCategory;
+  const setSelectedCategory = propSetCategory || setLocalSelectedCategory;
+
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'year'>('featured');
   const [cardPhotoIndex, setCardPhotoIndex] = useState<{ [carId: string]: number }>({});
@@ -125,11 +143,11 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
     <section id="inventario" className="max-w-[1200px] mx-auto px-0 sm:px-4 py-8">
       {/* Main Tabs Container: SOLO NUEVOS vs INVENTARIO COMPLETO (2nd tab active by default) */}
       <div className="flex justify-center mb-6">
-        <div className="bg-[#000000] border border-[#333333] p-1 rounded inline-flex gap-1">
+        <div className="bg-[#000000] border border-[#333333] p-1.5 rounded inline-flex gap-2">
           {/* Tab 1: Solo Nuevos */}
           <button
             onClick={() => setInventoryType('NUEVOS')}
-            className={`px-5 py-2.5 text-xs font-black uppercase transition-all cursor-pointer rounded ${
+            className={`px-6 py-3 text-sm sm:text-base font-black uppercase transition-all cursor-pointer rounded ${
               inventoryType === 'NUEVOS'
                 ? 'bg-[#00FFFF] text-black shadow-none'
                 : 'text-[#888888] hover:text-white hover:bg-white/5'
@@ -141,14 +159,14 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
           {/* Tab 2: Inventario Completo (Activo por defecto) */}
           <button
             onClick={() => setInventoryType('COMPLETO')}
-            className={`px-5 py-2.5 text-xs font-black uppercase transition-all cursor-pointer rounded flex items-center gap-1.5 ${
+            className={`px-6 py-3 text-sm sm:text-base font-black uppercase transition-all cursor-pointer rounded flex items-center gap-2 ${
               inventoryType === 'COMPLETO'
                 ? 'bg-[#00FFFF] text-black shadow-none'
                 : 'text-[#888888] hover:text-white hover:bg-white/5'
             }`}
           >
             <span>INVENTARIO COMPLETO</span>
-            <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+            <span className={`text-xs px-2 py-0.5 rounded font-mono ${
               inventoryType === 'COMPLETO' ? 'bg-black text-[#00FFFF]' : 'bg-[#222222] text-[#888888]'
             }`}>
               {INVENTORY.length}
@@ -158,14 +176,14 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-[#000000] p-4 rounded border border-[#333333] mb-8 space-y-3">
+      <div className="bg-[#000000] p-4 sm:p-5 rounded border border-[#333333] mb-8 space-y-4">
         {/* Sub-Category Model Filter Tabs */}
-        <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+        <div className="flex gap-2.5 overflow-x-auto pb-1.5 scrollbar-none">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-3 py-1.5 text-xs font-bold uppercase whitespace-nowrap transition-colors cursor-pointer border ${
+              className={`px-4 py-2 text-xs sm:text-sm font-black uppercase whitespace-nowrap transition-colors cursor-pointer border ${
                 selectedCategory === cat.id
                   ? 'bg-[#00FFFF] text-[#000000] border-[#00FFFF]'
                   : 'bg-[#000000] text-[#FFFFFF] border-[#333333] hover:border-[#00FFFF]'
@@ -177,24 +195,24 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
         </div>
 
         {/* Search & Sort */}
-        <div className="flex flex-col sm:flex-row gap-3 items-center justify-between pt-2 border-t border-[#333333]">
-          <div className="relative w-full sm:w-80">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#888888]" />
+        <div className="flex flex-col sm:flex-row gap-3.5 items-center justify-between pt-3 border-t border-[#333333]">
+          <div className="relative w-full sm:w-96">
+            <Search className="w-5 h-5 absolute left-3.5 top-1/2 -translate-y-1/2 text-[#888888]" />
             <input 
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar por modelo, stock, color, VIN..."
-              className="w-full bg-[#000000] border border-[#333333] rounded pl-9 pr-3 py-2 text-xs text-white placeholder:text-[#666666] focus:outline-none focus:border-[#00FFFF]"
+              className="w-full bg-[#000000] border border-[#333333] rounded pl-10 pr-3 py-2.5 text-sm text-white placeholder:text-[#666666] focus:outline-none focus:border-[#00FFFF]"
             />
           </div>
 
-          <div className="flex items-center gap-3 w-full sm:w-auto justify-between text-xs text-[#888888]">
-            <span className="font-mono text-[#00FFFF]">{filteredVehicles.length} UNIDADES EN {inventoryType === 'NUEVOS' ? 'SOLO NUEVOS' : 'INVENTARIO COMPLETO'}</span>
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-between text-sm text-[#888888]">
+            <span className="font-mono text-[#00FFFF] font-bold">{filteredVehicles.length} UNIDADES EN {inventoryType === 'NUEVOS' ? 'SOLO NUEVOS' : 'INVENTARIO COMPLETO'}</span>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="bg-[#000000] border border-[#333333] text-[#FFFFFF] rounded px-2 py-1.5 focus:outline-none focus:border-[#00FFFF]"
+              className="bg-[#000000] border border-[#333333] text-[#FFFFFF] font-bold text-xs sm:text-sm rounded px-3 py-2 focus:outline-none focus:border-[#00FFFF]"
             >
               <option value="featured">Mazda Nuevos Primero</option>
               <option value="year">Año más reciente</option>
@@ -208,10 +226,10 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
       {/* Grid of Car Cards */}
       {filteredVehicles.length === 0 ? (
         <div className="bg-[#000000] border border-[#333333] rounded p-12 text-center text-[#888888]">
-          <p className="text-base text-white mb-2">NO SE ENCONTRARON VEHÍCULOS</p>
+          <p className="text-lg text-white mb-2 font-bold">NO SE ENCONTRARON VEHÍCULOS</p>
           <button
             onClick={() => { setInventoryType('COMPLETO'); setSelectedCategory('ALL'); setSearchQuery(''); }}
-            className="text-xs text-[#00FFFF] underline cursor-pointer"
+            className="text-sm text-[#00FFFF] underline cursor-pointer font-bold"
           >
             Ver inventario completo
           </button>
@@ -260,21 +278,21 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
 
                   {/* Photo count indicator */}
                   {photos.length > 1 && (
-                    <div className="absolute bottom-2 right-2 bg-black/85 border border-[#333333] text-white text-[10px] px-2 py-0.5 rounded flex items-center gap-1">
-                      <ImageIcon className="w-3 h-3 text-[#00FFFF]" /> {currentIdx + 1}/{photos.length}
+                    <div className="absolute bottom-2 right-2 bg-black/85 border border-[#333333] text-white text-xs px-2 py-0.5 rounded flex items-center gap-1 font-bold">
+                      <ImageIcon className="w-3.5 h-3.5 text-[#00FFFF]" /> {currentIdx + 1}/{photos.length}
                     </div>
                   )}
 
                   {/* Stock tag */}
-                  <div className="absolute top-2 right-2 bg-black/85 border border-[#333333] text-[#00FFFF] text-[10px] px-2 py-0.5 rounded font-mono">
+                  <div className="absolute top-2 right-2 bg-black/85 border border-[#333333] text-[#00FFFF] text-xs px-2.5 py-1 rounded font-mono font-bold">
                     STOCK #{vehicle.stock}
                   </div>
                 </div>
 
                 {/* Content */}
                 <div className="car-content">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="bg-[#00FFFF] text-black font-black text-[11px] px-2 py-0.5 rounded">
+                  <div className="flex items-center gap-2 mb-1.5">
+                    <span className="bg-[#00FFFF] text-black font-black text-xs px-2.5 py-0.5 rounded">
                       {vehicle.year}
                     </span>
                     <span className="car-badge">{vehicle.status}</span>
@@ -286,18 +304,18 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
                   >
                     {vehicle.year} {vehicle.make ? vehicle.make.toUpperCase() : ''} {vehicle.model.toUpperCase()}
                   </h3>
-                  <div className="text-xs text-[#00FFFF] font-extrabold uppercase tracking-wide mb-2">
+                  <div className="text-sm text-[#00FFFF] font-extrabold uppercase tracking-wide mb-2.5">
                     PAQUETE: {vehicle.trim.toUpperCase()}
                   </div>
 
                   <div 
                     onClick={() => onSelectVehicle(vehicle)}
-                    className="border-t border-b border-[#333333] py-2 px-1 mb-2.5 flex items-center justify-between cursor-pointer hover:border-[#00FFFF] transition-colors group/cardbtn"
+                    className="border-t border-b border-[#333333] py-2.5 px-1.5 mb-3 flex items-center justify-between cursor-pointer hover:border-[#00FFFF] transition-colors group/cardbtn"
                   >
-                    <span className="text-xs font-mono font-black text-[#00FFFF] uppercase tracking-wide">
+                    <span className="text-sm font-mono font-black text-[#00FFFF] uppercase tracking-wide">
                       VER PRECIO & CUOTA
                     </span>
-                    <span className="text-[11px] font-mono text-[#AAAAAA] group-hover/cardbtn:text-white font-bold transition-colors">
+                    <span className="text-xs font-mono text-[#AAAAAA] group-hover/cardbtn:text-white font-bold transition-colors">
                       TARJETA INTERNA ➔
                     </span>
                   </div>
@@ -310,11 +328,11 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
                   </div>
 
                   {/* Action Button: Exact Match to User Template */}
-                  <div className={`mt-auto grid gap-2 ${vehicle.url && vehicle.url !== 'N/A' ? 'grid-cols-2' : 'grid-cols-1'}`}>
+                  <div className={`mt-auto grid gap-2.5 ${vehicle.url && vehicle.url !== 'N/A' ? 'grid-cols-2' : 'grid-cols-1'}`}>
                     <button 
                       onClick={() => onAskAI(vehicle)}
                       className="btn-ask-ai"
-                      style={{ marginTop: 0, width: '100%', padding: '12px 4px', fontSize: '0.85rem' }}
+                      style={{ marginTop: 0, width: '100%', padding: '14px 6px', fontSize: '1rem' }}
                     >
                       PREGÚNTAME
                     </button>
@@ -324,17 +342,17 @@ export function InventoryGrid({ onSelectVehicle, onAskAI }: InventoryGridProps) 
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center justify-center bg-transparent border border-[#00FFFF] text-[#00FFFF] font-black uppercase text-center hover:bg-[#00FFFF] hover:text-black transition-colors"
-                        style={{ width: '100%', textDecoration: 'none', fontSize: '0.85rem', padding: '12px 4px' }}
+                        style={{ width: '100%', textDecoration: 'none', fontSize: '1rem', padding: '14px 6px' }}
                       >
                         FICHA 360°
                       </a>
                     )}
                   </div>
 
-                  <div className="mt-2 text-center">
+                  <div className="mt-2.5 text-center">
                     <button
                       onClick={() => onSelectVehicle(vehicle)}
-                      className="text-xs text-[#888888] hover:text-[#FFFFFF] py-1 transition-colors cursor-pointer"
+                      className="text-sm text-[#AAAAAA] hover:text-[#FFFFFF] py-1 transition-colors cursor-pointer font-bold"
                     >
                       Ver detalles & fotos completas
                     </button>

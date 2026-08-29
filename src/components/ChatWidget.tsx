@@ -289,49 +289,49 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-5 right-5 z-40 bg-[#00FFFF] text-black px-4 py-3 border border-black shadow-none hover:bg-[#55FFFF] transition-all flex items-center gap-2 font-black text-xs uppercase cursor-pointer underline"
+        className="fixed bottom-5 right-5 z-40 bg-[#00FFFF] text-black px-5 py-3.5 border border-black shadow-none hover:bg-[#55FFFF] transition-all flex items-center gap-2.5 font-black text-sm uppercase cursor-pointer underline"
       >
-        <MessageSquare className="w-4 h-4" />
+        <MessageSquare className="w-5 h-5" />
         <span>HABLAR CON SHAKIRA</span>
       </button>
     );
   }
 
   return (
-    <div className={`fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-40 w-[94vw] sm:w-[380px] bg-[#000000] border border-[#333333] rounded overflow-hidden flex flex-col transition-all duration-200 car-card ${
-      isMinimized ? 'h-[52px]' : 'h-[520px] max-h-[85vh]'
+    <div className={`fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-40 w-[94vw] sm:w-[420px] bg-[#000000] border border-[#333333] rounded overflow-hidden flex flex-col transition-all duration-200 car-card ${
+      isMinimized ? 'h-[58px]' : 'h-[560px] max-h-[88vh]'
     }`}>
       {/* Header */}
-      <div className="bg-[#000000] px-4 py-2.5 border-b border-[#333333] flex items-center justify-between select-none">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-[#000000] border border-[#00FFFF] flex items-center justify-center text-[#00FFFF] font-black text-xs">
+      <div className="bg-[#000000] px-4 py-3 border-b border-[#333333] flex items-center justify-between select-none">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-[#000000] border-2 border-[#00FFFF] flex items-center justify-center text-[#00FFFF] font-black text-sm">
             S
           </div>
           <div>
-            <div className="font-black text-xs sm:text-sm text-white flex items-center gap-1.5 uppercase">
+            <div className="font-black text-sm sm:text-base text-white flex items-center gap-2 uppercase">
               Shakira • Barranquitas Mazda
-              <span className="text-[#00FFFF] text-[9px] font-mono">
+              <span className="text-[#00FFFF] text-xs font-mono font-bold">
                 [EN LÍNEA]
               </span>
             </div>
-            <div className="text-[10px] text-[#888888]">Asesora Virtual de Ventas</div>
+            <div className="text-xs text-[#AAAAAA] font-bold">Asesora Virtual de Ventas</div>
           </div>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button 
             onClick={() => setIsMinimized(!isMinimized)}
-            className="text-[#888888] hover:text-[#00FFFF] p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+            className="text-[#AAAAAA] hover:text-[#00FFFF] p-1.5 rounded hover:bg-white/5 transition-colors cursor-pointer"
             title={isMinimized ? "Expandir" : "Minimizar"}
           >
-            <Minimize2 className="w-3.5 h-3.5" />
+            <Minimize2 className="w-4 h-4" />
           </button>
           <button 
             onClick={() => setIsOpen(false)}
-            className="text-[#888888] hover:text-red-400 p-1 rounded hover:bg-white/5 transition-colors cursor-pointer"
+            className="text-[#AAAAAA] hover:text-red-400 p-1.5 rounded hover:bg-white/5 transition-colors cursor-pointer"
             title="Cerrar"
           >
-            <ChevronDown className="w-4 h-4" />
+            <ChevronDown className="w-5 h-5" />
           </button>
         </div>
       </div>
@@ -339,14 +339,14 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
       {!isMinimized && (
         <>
           {/* Chat Body */}
-          <div className="flex-1 p-3.5 overflow-y-auto space-y-3 bg-[#000000] text-xs font-normal">
+          <div className="flex-1 p-4 overflow-y-auto space-y-3.5 bg-[#000000] text-sm font-normal">
             {messages.map((msg) => (
               <div 
                 key={msg.id}
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div 
-                  className={`p-3 rounded max-w-[88%] leading-relaxed ${
+                  className={`p-3.5 rounded max-w-[88%] leading-relaxed text-sm ${
                     msg.role === 'user'
                       ? 'bg-[#00FFFF] text-black font-bold'
                       : 'bg-[#111111] text-[#FFFFFF] border-l-2 border-[#00FFFF]'
@@ -354,7 +354,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
                 >
                   {/* Markdown simple renderer */}
                   {msg.text.split('\n').map((line, lIdx) => (
-                    <p key={lIdx} className={lIdx > 0 ? 'mt-1.5' : ''}>
+                    <p key={lIdx} className={lIdx > 0 ? 'mt-2' : ''}>
                       {line.split(/\*\*(.*?)\*\*/g).map((part, pIdx) => 
                         pIdx % 2 === 1 ? <strong key={pIdx} className={msg.role === 'user' ? 'font-black' : 'text-[#00FFFF] font-bold'}>{part}</strong> : part
                       )}
@@ -366,11 +366,11 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="bg-[#111111] text-[#00FFFF] border-l-2 border-[#00FFFF] p-2.5 rounded flex items-center gap-1.5 text-xs">
-                  <span className="w-1.5 h-1.5 bg-[#00FFFF] rounded-full animate-bounce" />
-                  <span className="w-1.5 h-1.5 bg-[#00FFFF] rounded-full animate-bounce [animation-delay:0.2s]" />
-                  <span className="w-1.5 h-1.5 bg-[#00FFFF] rounded-full animate-bounce [animation-delay:0.4s]" />
-                  <span className="ml-1 text-[#888888] text-[10px]">Shakira está verificando inventario...</span>
+                <div className="bg-[#111111] text-[#00FFFF] border-l-2 border-[#00FFFF] p-3 rounded flex items-center gap-2 text-sm">
+                  <span className="w-2 h-2 bg-[#00FFFF] rounded-full animate-bounce" />
+                  <span className="w-2 h-2 bg-[#00FFFF] rounded-full animate-bounce [animation-delay:0.2s]" />
+                  <span className="w-2 h-2 bg-[#00FFFF] rounded-full animate-bounce [animation-delay:0.4s]" />
+                  <span className="ml-1.5 text-[#AAAAAA] text-xs font-bold">Shakira está verificando inventario...</span>
                 </div>
               </div>
             )}
@@ -378,13 +378,13 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
           </div>
 
           {/* Quick Prompts */}
-          <div className="px-3 py-1.5 bg-[#000000] border-t border-[#333333] flex gap-1.5 overflow-x-auto no-scrollbar">
+          <div className="px-3 py-2 bg-[#000000] border-t border-[#333333] flex gap-2 overflow-x-auto no-scrollbar">
             {quickPrompts.map((prompt, idx) => (
               <button
                 key={idx}
                 onClick={() => handleSend(prompt)}
                 disabled={isLoading}
-                className="whitespace-nowrap bg-[#000000] hover:bg-[#111111] text-[#888888] hover:text-[#00FFFF] border border-[#333333] hover:border-[#00FFFF] px-2 py-1 rounded text-[10px] transition-all cursor-pointer font-bold"
+                className="whitespace-nowrap bg-[#000000] hover:bg-[#111111] text-[#CCCCCC] hover:text-[#00FFFF] border border-[#333333] hover:border-[#00FFFF] px-3 py-1.5 rounded text-xs transition-all cursor-pointer font-bold"
               >
                 {prompt}
               </button>
@@ -392,10 +392,10 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
           </div>
 
           {/* Input Area */}
-          <div className="p-2.5 bg-[#000000] border-t border-[#333333]">
+          <div className="p-3 bg-[#000000] border-t border-[#333333]">
             <form 
               onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-              className="flex gap-2"
+              className="flex gap-2.5"
             >
               <input 
                 type="text"
@@ -403,14 +403,14 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Escribe tu consulta o pide una cita..."
                 disabled={isLoading}
-                className="flex-1 bg-[#000000] border border-[#333333] text-white text-xs px-3 py-2 rounded focus:outline-none focus:border-[#00FFFF] transition-colors placeholder:text-[#666666]"
+                className="flex-1 bg-[#000000] border border-[#333333] text-white text-sm px-3.5 py-2.5 rounded focus:outline-none focus:border-[#00FFFF] transition-colors placeholder:text-[#666666]"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="bg-[#00FFFF] text-black px-3 py-2 rounded hover:bg-[#55FFFF] disabled:opacity-40 transition-colors cursor-pointer flex items-center justify-center font-bold"
+                className="bg-[#00FFFF] text-black px-4 py-2.5 rounded hover:bg-[#55FFFF] disabled:opacity-40 transition-colors cursor-pointer flex items-center justify-center font-bold"
               >
-                <Send className="w-3.5 h-3.5" />
+                <Send className="w-4 h-4" />
               </button>
             </form>
           </div>

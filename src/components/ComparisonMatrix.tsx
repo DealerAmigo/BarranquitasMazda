@@ -76,24 +76,24 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
           <div>
-            <div className="text-xs text-[#00FFFF] uppercase font-black mb-1">
+            <div className="text-sm text-[#00FFFF] uppercase font-black mb-1">
               VENTAJA COMPETITIVA MAZDA
             </div>
-            <h2 className="text-xl sm:text-2xl font-black uppercase text-white">
+            <h2 className="text-2xl sm:text-3xl font-black uppercase text-white">
               ¿POR QUÉ MAZDA ES SUPERIOR?
             </h2>
           </div>
 
           {/* Model Selector Tabs */}
-          <div className="flex gap-1.5 bg-[#000000] p-1 rounded border border-[#333333] overflow-x-auto w-full md:w-auto">
+          <div className="flex gap-2 bg-[#000000] p-1.5 rounded border border-[#333333] overflow-x-auto w-full md:w-auto">
             {(Object.keys(comparisons) as Array<keyof typeof comparisons>).map((model) => (
               <button
                 key={model}
                 onClick={() => setActiveTab(model)}
-                className={`px-3 py-1.5 rounded text-xs font-black uppercase transition-all cursor-pointer whitespace-nowrap ${
+                className={`px-4 py-2 rounded text-xs sm:text-sm font-black uppercase transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === model 
                     ? 'bg-[#00FFFF] text-black' 
-                    : 'text-[#888888] hover:text-[#FFFFFF]'
+                    : 'text-[#AAAAAA] hover:text-[#FFFFFF]'
                 }`}
               >
                 {model}
@@ -104,35 +104,35 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
 
         {/* Comparison Table */}
         <div className="relative border border-[#333333] rounded mb-6 overflow-hidden">
-          <div className="sm:hidden bg-[#111111] px-3 py-1.5 text-[10px] text-[#00FFFF] font-mono border-b border-[#333333] flex items-center justify-between">
+          <div className="sm:hidden bg-[#111111] px-3.5 py-2 text-xs text-[#00FFFF] font-mono border-b border-[#333333] flex items-center justify-between font-bold">
             <span>⇄ DESLIZA PARA COMPARAR</span>
-            <span className="text-[#888888]">100% AWD DE SERIE</span>
+            <span className="text-[#AAAAAA]">100% AWD DE SERIE</span>
           </div>
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs min-w-[580px]">
+            <table className="w-full text-left border-collapse text-sm min-w-[620px]">
               <thead>
                 <tr className="bg-[#111111] border-b border-[#333333]">
-                  <th className="p-3.5 text-[#888888] font-bold w-[28%]">CARACTERÍSTICA</th>
-                  <th className="p-3.5 text-[#00FFFF] font-black w-[36%] bg-[#00FFFF]/5 border-l border-r border-[#333333]">
+                  <th className="p-4 text-[#AAAAAA] font-black w-[28%] text-xs sm:text-sm">CARACTERÍSTICA</th>
+                  <th className="p-4 text-[#00FFFF] font-black w-[36%] bg-[#00FFFF]/5 border-l border-r border-[#333333] text-xs sm:text-sm">
                     {currentComp.mazdaTitle.toUpperCase()}
                   </th>
-                  <th className="p-3.5 text-[#888888] font-bold w-[36%]">{currentComp.rivalTitle.toUpperCase()}</th>
+                  <th className="p-4 text-[#AAAAAA] font-black w-[36%] text-xs sm:text-sm">{currentComp.rivalTitle.toUpperCase()}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#222222]">
                 {currentComp.features.map((feat, idx) => (
                   <tr key={idx} className="hover:bg-[#111111] transition-colors">
-                    <td className="p-3.5 font-bold text-[#FFFFFF] whitespace-nowrap">{feat.name}</td>
-                    <td className="p-3.5 bg-[#00FFFF]/5 border-l border-r border-[#333333] text-white">
-                      <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#00FFFF] shrink-0 mt-0.5" />
+                    <td className="p-4 font-black text-[#FFFFFF] whitespace-nowrap">{feat.name}</td>
+                    <td className="p-4 bg-[#00FFFF]/5 border-l border-r border-[#333333] text-white">
+                      <div className="flex items-start gap-2.5">
+                        <Check className="w-5 h-5 text-[#00FFFF] shrink-0 mt-0.5" />
                         <span className="font-bold">{feat.mazda}</span>
                       </div>
                     </td>
-                    <td className="p-3.5 text-[#888888]">
-                      <div className="flex items-start gap-2">
-                        <X className="w-4 h-4 text-[#666666] shrink-0 mt-0.5" />
-                        <span>{feat.rival}</span>
+                    <td className="p-4 text-[#AAAAAA]">
+                      <div className="flex items-start gap-2.5">
+                        <X className="w-5 h-5 text-[#888888] shrink-0 mt-0.5" />
+                        <span className="font-medium">{feat.rival}</span>
                       </div>
                     </td>
                   </tr>
@@ -143,15 +143,15 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
         </div>
 
         {/* Summary Footer */}
-        <div className="bg-[#000000] p-4 rounded border border-[#333333] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-xs text-[#CCCCCC] font-normal leading-relaxed">
-            <strong className="text-[#00FFFF] block uppercase mb-1 font-black">Conclusión de Nuestra Asesora Shakira:</strong>
+        <div className="bg-[#000000] p-5 sm:p-6 rounded border border-[#333333] flex flex-col sm:flex-row items-center justify-between gap-5">
+          <div className="text-sm sm:text-base text-[#DDDDDD] font-normal leading-relaxed">
+            <strong className="text-[#00FFFF] block uppercase mb-1.5 font-black text-sm sm:text-base">Conclusión de Nuestra Asesora Shakira:</strong>
             {currentComp.argument}
           </div>
 
           <button
             onClick={() => onAskComparison(activeTab)}
-            className="btn-ask-ai sm:w-auto px-4 sm:px-6"
+            className="btn-ask-ai sm:w-auto px-6 sm:px-8 py-3.5 text-sm sm:text-base whitespace-nowrap shrink-0"
           >
             PREGÚNTAME SOBRE {activeTab}
           </button>

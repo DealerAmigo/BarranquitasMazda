@@ -81,28 +81,28 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
         {/* Header */}
         <div className="p-5 border-b border-[#333333] flex justify-between items-center bg-[#000000]">
           <div>
-            <span className="text-[#00FFFF] text-xs font-black uppercase">
+            <span className="text-[#00FFFF] text-xs sm:text-sm font-black uppercase">
               SIN IMPACTO A TU CRÉDITO
             </span>
-            <h2 className="text-lg sm:text-xl font-black text-white mt-1">
+            <h2 className="text-xl sm:text-2xl font-black text-white mt-1">
               PRECALIFICACIÓN & CALCULADORA DE PAGO
             </h2>
           </div>
           <button 
             onClick={onClose}
-            className="text-[#888888] hover:text-[#00FFFF] p-1.5 rounded transition-colors cursor-pointer"
+            className="text-[#AAAAAA] hover:text-[#00FFFF] p-1.5 rounded transition-colors cursor-pointer"
           >
-            <X className="w-5 h-5" />
+            <X className="w-6 h-6" />
           </button>
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-5 text-xs text-[#FFFFFF]">
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto space-y-6 text-sm text-[#FFFFFF]">
           {submitted ? (
             <div className="text-center py-12 space-y-3">
-              <CheckCircle2 className="w-12 h-12 text-[#00FFFF] mx-auto animate-bounce" />
-              <h3 className="text-lg font-black text-white">¡PRECALIFICACIÓN REGISTRADA!</h3>
-              <p className="text-xs text-[#888888]">
+              <CheckCircle2 className="w-14 h-14 text-[#00FFFF] mx-auto animate-bounce" />
+              <h3 className="text-xl font-black text-white">¡PRECALIFICACIÓN REGISTRADA!</h3>
+              <p className="text-sm text-[#AAAAAA]">
                 Enviando los datos a nuestra Asesora Virtual Shakira para tu cotización...
               </p>
             </div>
@@ -110,13 +110,13 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
             <>
               {/* Vehicle Select */}
               <div>
-                <label className="block text-xs uppercase text-[#888888] font-bold mb-1.5">
+                <label className="block text-xs sm:text-sm uppercase text-[#AAAAAA] font-bold mb-2">
                   Selecciona la Unidad
                 </label>
                 <select
                   value={vehicleId}
                   onChange={(e) => setVehicleId(e.target.value)}
-                  className="w-full bg-[#000000] border border-[#333333] rounded p-2.5 text-xs text-white focus:outline-none focus:border-[#00FFFF]"
+                  className="w-full bg-[#000000] border border-[#333333] rounded p-3 text-sm text-white focus:outline-none focus:border-[#00FFFF] font-bold"
                 >
                   {INVENTORY.length === 0 ? (
                     <option value="">Cualquier modelo disponible</option>
@@ -131,11 +131,11 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
               </div>
 
               {/* Calculator Sliders */}
-              <div className="bg-[#000000] p-4 rounded border border-[#333333] space-y-4">
+              <div className="bg-[#000000] p-4 sm:p-5 rounded border border-[#333333] space-y-5">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-[#888888] font-bold">Pronto Inicial:</span>
+                    <div className="flex justify-between mb-1.5 text-sm">
+                      <span className="text-[#AAAAAA] font-bold">Pronto Inicial:</span>
                       <span className="font-black text-[#00FFFF]">${downPayment.toLocaleString()}</span>
                     </div>
                     <input 
@@ -150,14 +150,14 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
                   </div>
 
                   <div>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-[#888888] font-bold">Plazo de Financiamiento:</span>
+                    <div className="flex justify-between mb-1.5 text-sm">
+                      <span className="text-[#AAAAAA] font-bold">Plazo de Financiamiento:</span>
                       <span className="font-black text-[#00FFFF]">{termMonths} Meses</span>
                     </div>
                     <select
                       value={termMonths}
                       onChange={(e) => setTermMonths(Number(e.target.value))}
-                      className="w-full bg-[#000000] border border-[#333333] text-white rounded p-1.5 focus:border-[#00FFFF]"
+                      className="w-full bg-[#000000] border border-[#333333] text-white rounded p-2.5 text-sm font-bold focus:border-[#00FFFF]"
                     >
                       <option value={48}>48 Meses (4 Años)</option>
                       <option value={60}>60 Meses (5 Años)</option>
@@ -168,19 +168,19 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
                 </div>
 
                 {/* Trade In Switch */}
-                <div className="pt-2 border-t border-[#333333]">
+                <div className="pt-3 border-t border-[#333333]">
                   <div className="flex items-center justify-between">
-                    <label className="flex items-center gap-2 cursor-pointer">
+                    <label className="flex items-center gap-2.5 cursor-pointer">
                       <input 
                         type="checkbox"
                         checked={hasTradeIn}
                         onChange={(e) => setHasTradeIn(e.target.checked)}
-                        className="rounded border-[#333333] accent-[#00FFFF]"
+                        className="rounded border-[#333333] accent-[#00FFFF] w-4 h-4"
                       />
-                      <span className="text-white font-bold">¿Tienes un auto para Trade-In?</span>
+                      <span className="text-white font-bold text-sm">¿Tienes un auto para Trade-In?</span>
                     </label>
                     {hasTradeIn && (
-                      <span className="font-black text-[#00FFFF]">${tradeInValue.toLocaleString()}</span>
+                      <span className="font-black text-[#00FFFF] text-base">${tradeInValue.toLocaleString()}</span>
                     )}
                   </div>
                   {hasTradeIn && (
@@ -199,21 +199,21 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
                 </div>
 
                 {/* Resulting Monthly Estimated Banner */}
-                <div className="bg-[#111111] p-3.5 rounded border border-[#333333] flex justify-between items-center">
+                <div className="bg-[#111111] p-4 rounded border border-[#333333] flex justify-between items-center">
                   <div>
-                    <span className="text-xs text-[#888888] uppercase block font-bold">Cuota Mensual Estimada</span>
-                    <span className="text-2xl font-black text-[#00FFFF]">${estimatedMonthly}/mes*</span>
+                    <span className="text-xs sm:text-sm text-[#AAAAAA] uppercase block font-bold">Cuota Mensual Estimada</span>
+                    <span className="text-2xl sm:text-3xl font-black text-[#00FFFF]">${estimatedMonthly}/mes*</span>
                   </div>
-                  <span className="text-[10px] text-[#888888] text-right font-mono">Tasa est. ~6.5% APR</span>
+                  <span className="text-xs text-[#AAAAAA] text-right font-mono">Tasa est. ~6.5% APR</span>
                 </div>
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-3">
-                <span className="text-xs uppercase text-[#888888] font-bold block">
+              <div className="space-y-3.5">
+                <span className="text-xs sm:text-sm uppercase text-[#AAAAAA] font-bold block">
                   Información de Contacto
                 </span>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <input 
                       type="text"
@@ -221,7 +221,7 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Nombre y Apellidos"
-                      className="w-full bg-[#000000] border border-[#333333] rounded p-2.5 text-xs text-white focus:outline-none focus:border-[#00FFFF]"
+                      className="w-full bg-[#000000] border border-[#333333] rounded p-3 text-sm text-white focus:outline-none focus:border-[#00FFFF] placeholder:text-[#666666]"
                     />
                   </div>
                   <div>
@@ -231,7 +231,7 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Teléfono (Ej: 787-555-0199)"
-                      className="w-full bg-[#000000] border border-[#333333] rounded p-2.5 text-xs text-white focus:outline-none focus:border-[#00FFFF]"
+                      className="w-full bg-[#000000] border border-[#333333] rounded p-3 text-sm text-white focus:outline-none focus:border-[#00FFFF] placeholder:text-[#666666]"
                     />
                   </div>
                 </div>
@@ -240,7 +240,7 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Correo electrónico (Opcional)"
-                  className="w-full bg-[#000000] border border-[#333333] rounded p-2.5 text-xs text-white focus:outline-none focus:border-[#00FFFF]"
+                  className="w-full bg-[#000000] border border-[#333333] rounded p-3 text-sm text-white focus:outline-none focus:border-[#00FFFF] placeholder:text-[#666666]"
                 />
               </div>
 
@@ -248,12 +248,12 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-ask-ai"
+                className="btn-ask-ai text-sm sm:text-base py-3.5"
               >
                 {isSubmitting ? 'PROCESANDO...' : 'SOLICITAR PRECALIFICACIÓN'}
               </button>
 
-              <p className="text-[10px] text-[#888888] text-center">
+              <p className="text-xs text-[#AAAAAA] text-center leading-relaxed">
                 *Los pagos mostrados son estimados. El pago final depende del crédito, pronto, plazo, intereses, cargos y aprobación de la institución financiera.
               </p>
             </>
