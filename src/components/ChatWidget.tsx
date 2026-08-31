@@ -187,16 +187,58 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
     const emailMatch = textToSend.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/) ||
       fullHistoryText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
     
-    // Look for name candidate across conversation (strictly validated)
+    // Look for name candidate across conversation (strictly and smartly validated)
     let detectedName = '';
-    const nonNameWords = ['su', 'si', 'sí', 'sip', 'no', 'ok', 'vale', 'dale', 'hola', 'buenos', 'tardes', 'noches', 'saludos', 'precio', 'mazda', 'ford', 'toyota', 'carro', 'guagua', 'claro', 'gracias', 'cuanto', 'donde', 'pronto', 'trade', 'pago', 'nuevo', 'usado'];
-    for (const msg of allUserTexts) {
-      const nameMatch = msg.match(/(?:me llamo|mi nombre es|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}(?:\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}){0,2})/i);
-      if (nameMatch && nameMatch[1]) {
-        const cand = nameMatch[1].trim();
-        if (!nonNameWords.includes(cand.toLowerCase())) {
-          detectedName = cand;
-          break;
+    const nonNameWords = new Set([
+      'su', 'si', 'sí', 'sip', 'sii', 'no', 'nop', 'ok', 'okay', 'vale', 'dale', 'hola', 'buenos', 'buenas',
+      'tardes', 'noches', 'saludos', 'precio', 'mazda', 'ford', 'toyota', 'carro', 'guagua', 'claro', 'gracias',
+      'cuanto', 'donde', 'pronto', 'trade', 'tradein', 'trade-in', 'pago', 'nuevo', 'usado', 'solicitud',
+      'credito', 'crédito', 'banco', 'cooperativa', 'quiero', 'interesa', 'bien', 'mal', 'hoy', 'mañana'
+    ]);
+
+    for (let i = 0; i < messages.length; i++) {
+      const m = messages[i];
+      if (m.role === 'user') {
+        const txt = m.text.trim();
+        // Check for explicit "me llamo", "soy", "mi nombre es"
+        const explicitM = txt.match(/(?:me llamo|mi nombre es|mi nombre:|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}(?:\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}){0,2})/i);
+        if (explicitM && explicitM[1]) {
+          const cand = explicitM[1].trim();
+          if (!nonNameWords.has(cand.toLowerCase())) {
+            detectedName = cand;
+            break;
+          }
+        }
+        // Check if previous bot message asked for name
+        const prevBot = i > 0 ? messages[i - 1]?.text.toLowerCase() || '' : '';
+        if (prevBot.includes('con quién') || prevBot.includes('tu nombre') || prevBot.includes('a tu nombre')) {
+          // If the user text is a clean 1-3 words string (e.g. "Wilfredo Quiñones" or "Carlos")
+          const nameCleanMatch = txt.match(/^([A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}(?:\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}){0,2})$/);
+          if (nameCleanMatch && nameCleanMatch[1]) {
+            const cand = nameCleanMatch[1].trim();
+            if (!nonNameWords.has(cand.toLowerCase()) && !cand.toLowerCase().startsWith('no ')) {
+              detectedName = cand;
+              break;
+            }
+          }
+        }
+      }
+    }
+
+    // Also check current textToSend if not found in history
+    if (!detectedName) {
+      const lastBotMsg = messages.length > 0 ? (messages[messages.length - 1].text || '').toLowerCase() : '';
+      const explicitCurrent = textToSend.match(/(?:me llamo|mi nombre es|mi nombre:|soy)\s+([A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}(?:\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}){0,2})/i);
+      if (explicitCurrent && explicitCurrent[1]) {
+        const cand = explicitCurrent[1].trim();
+        if (!nonNameWords.has(cand.toLowerCase())) detectedName = cand;
+      } else if (lastBotMsg.includes('con quién') || lastBotMsg.includes('tu nombre') || lastBotMsg.includes('a tu nombre')) {
+        const nameCleanMatch = textToSend.trim().match(/^([A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}(?:\s+[A-Za-zÁÉÍÓÚáéíóúñÑ]{2,20}){0,2})$/);
+        if (nameCleanMatch && nameCleanMatch[1]) {
+          const cand = nameCleanMatch[1].trim();
+          if (!nonNameWords.has(cand.toLowerCase()) && !cand.toLowerCase().startsWith('no ')) {
+            detectedName = cand;
+          }
         }
       }
     }
@@ -377,14 +419,40 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
                       : 'bg-[#111111] text-[#FFFFFF] border-l-2 border-[#00FFFF]'
                   }`}
                 >
-                  {/* Markdown simple renderer */}
-                  {msg.text.split('\n').map((line, lIdx) => (
-                    <p key={lIdx} className={lIdx > 0 ? 'mt-2' : ''}>
-                      {line.split(/\*\*(.*?)\*\*/g).map((part, pIdx) => 
-                        pIdx % 2 === 1 ? <strong key={pIdx} className={msg.role === 'user' ? 'font-black' : 'text-[#00FFFF] font-bold'}>{part}</strong> : part
-                      )}
-                    </p>
-                  ))}
+                  {/* Markdown and Links/Buttons renderer */}
+                  {msg.text.split('\n').map((line, lIdx) => {
+                    // Check if line or text contains CognitoForms URL
+                    const hasCognitoForm = line.includes('cognitoforms.com/BarranquitasMazda1/SolicitudDeCr');
+                    const cleanLine = line.replace(/https:\/\/www\.cognitoforms\.com\/BarranquitasMazda1\/SolicitudDeCr%C3%A9dito/g, '').replace(/https:\/\/www\.cognitoforms\.com\/BarranquitasMazda1\/SolicitudDeCrédito/g, '').trim();
+
+                    return (
+                      <div key={lIdx} className={lIdx > 0 ? 'mt-2' : ''}>
+                        {cleanLine && (
+                          <p>
+                            {cleanLine.split(/\*\*(.*?)\*\*/g).map((part, pIdx) => 
+                              pIdx % 2 === 1 ? <strong key={pIdx} className={msg.role === 'user' ? 'font-black' : 'text-[#00FFFF] font-bold'}>{part}</strong> : part
+                            )}
+                          </p>
+                        )}
+                        
+                        {hasCognitoForm && (
+                          <div className="mt-3 pt-2 border-t border-[#333333]/80 flex flex-col gap-2">
+                            <a
+                              href="https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="w-full bg-[#00FFFF] hover:bg-[#55FFFF] text-black font-black text-xs uppercase px-3 py-2.5 rounded text-center transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer no-underline"
+                            >
+                              <span>🚀 Llenar Solicitud de Crédito Segura</span>
+                            </a>
+                            <div className="text-[11px] text-[#AAAAAA] text-center font-semibold">
+                              🔒 100% Segura • Sin impacto a tu puntuación al precalificar
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             ))}

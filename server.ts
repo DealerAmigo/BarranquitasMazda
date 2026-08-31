@@ -85,10 +85,12 @@ Si el cliente pregunta por Trade-In o no sabe cómo funciona, explícaselo con t
    - Pide con naturalidad 3 daticos básicos: Año, Marca/Modelo y Millaje aproximado.
    - Ofrécele: "Si gustas, me dices qué carro tienes y millaje aproximado para darte un estimado, o nos puedes enviar fotitos por WhatsApp para que el gerente de ventas te prepare la tasación preliminar."
 
-[MANEJO DE OBJECIONES Y CRÍTICAS - CX-5 2026 / CONSUMER REPORTS]
-- Si mencionan la reseña de Consumer Reports ("5 reasons to avoid") o críticas sobre la pantalla táctil, falta de botones físicos de A/C, acabados plásticos o que el híbrido llega en 2027:
-  - Sé 100% transparente y honesta. Valida su inquietud: "Totalmente de acuerdo, la pantalla táctil toma un tiempito de adaptación".
-  - Explica las fortalezas reales: seguridad i-Activsense de serie, chasis japonés excelente y el motor 2.5L súper probado y duradero. Si su prioridad inmediata es híbrido, recomiéndale la CX-50 Hybrid (38 MPG).
+[PREAPROBACIÓN SIN INDAGAR CRÉDITO Y ENLACE DE PRECALIFICACIÓN]
+- Cuando la conversación toque temas de financiamiento, pagos mensuales, crédito o requisitos, o cuando el cliente pregunte si califica:
+  1. OFRECE PREAPROBACIÓN SIN AFECTAR CRÉDITO: Aclara con entusiasmo y tranquilidad: "En Barranquitas Mazda podemos hacer una precalificación preliminar por teléfono sin indagar ni afectar tu crédito (soft pull), para ver qué opciones y bancos te aprueban más rápido".
+  2. SOLICITUD DIGITAL DE CRÉDITO: Si el cliente desea adelantar su aprobación formal desde su celular o computadora, invítalo cordialmente a llenar la solicitud oficial segura en:
+     https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito
+  3. Asegúrate de incluir el enlace o sugerir la llamada para que el cliente decida cómo le es más cómodo.
 `;
 
 const COMMON_NON_NAME_WORDS = new Set([
@@ -295,9 +297,19 @@ function generateSmartFallback(lastMsg: string, allMessages: any[] = []): string
     return `¡Tenemos pickups y guaguas de trabajo listas en inventario! Tenemos Toyota Tacoma, Tundra 4WD y vans comerciales con excelentes planes de financiamiento. ¿La buscas para uso personal o para tu negocio?`;
   }
 
-  // 10. Trade-in / Financing
+  // 10. Trade-in / Financing / Pre-qualification
+  if (q.includes('precalif') || q.includes('preaprob') || q.includes('credito') || q.includes('crédito') || q.includes('requisito')) {
+    return `¡En Barranquitas Mazda podemos hacer una precalificación preliminar por teléfono **sin indagar ni afectar tu crédito**! Si prefieres adelantar tu solicitud digital segura desde ahora, puedes completarla aquí:
+https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito
+
+¿Prefieres que un asesor te oriente primero por teléfono o WhatsApp?`;
+  }
+
   if (q.includes('trade') || q.includes('pago') || q.includes('financ') || q.includes('cuota') || q.includes('banco') || q.includes('coop')) {
-    return `En Barranquitas Mazda trabajamos con todos los bancos y cooperativas de Puerto Rico. Te aceptamos el trade-in con o sin deuda con la mejor tasación de la isla para cuadrarte un pago cómodo para la **${activeVehicle.name}**. ¿Tienes algún modelo en mente para trade-in?`;
+    return `En Barranquitas Mazda trabajamos con todos los bancos y cooperativas de Puerto Rico con opciones de $0 pronto y precalificación por teléfono sin afectar tu crédito. Si gustas adelantar tu solicitud formal segura, puedes llenarla aquí:
+https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito
+
+¿Tienes algún auto actual para entregar en trade-in o algún presupuesto mensual que prefieras?`;
   }
 
   // Default natural conversational response
