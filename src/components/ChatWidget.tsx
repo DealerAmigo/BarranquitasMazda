@@ -206,6 +206,15 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
     const referencedMsg = messages.find(m => m.vehicleRef);
     if (referencedMsg && referencedMsg.vehicleRef) {
       vehicleRef = `${referencedMsg.vehicleRef.model} (${referencedMsg.vehicleRef.trim}) - Stock #${referencedMsg.vehicleRef.stock}`;
+    } else {
+      // Detect mentioned models in conversation
+      if (/\bcx[-_ ]?50\b/i.test(fullHistoryText)) vehicleRef = 'Mazda CX-50 2026';
+      else if (/\bcx[-_ ]?70\b/i.test(fullHistoryText)) vehicleRef = 'Mazda CX-70 2026 (6 en Línea)';
+      else if (/\bcx[-_ ]?90\b/i.test(fullHistoryText)) vehicleRef = 'Mazda CX-90 2026 (3 Filas)';
+      else if (/\bcx[-_ ]?30\b/i.test(fullHistoryText)) vehicleRef = 'Mazda CX-30 2026';
+      else if (/\bcx[-_ ]?5\b/i.test(fullHistoryText)) vehicleRef = 'Mazda CX-5 2026 Rediseñada';
+      else if (/tacoma/i.test(fullHistoryText)) vehicleRef = 'Toyota Tacoma';
+      else if (/tundra/i.test(fullHistoryText)) vehicleRef = 'Toyota Tundra';
     }
 
     // Pronto / Down payment extraction
@@ -217,6 +226,7 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
         downPaymentVal = parsedPronto;
       }
     }
+    const isZeroDown = /(?:cero pronto|sin pronto|sin inicial|0 pronto|nada de pronto|100% financiado)/i.test(fullHistoryText);
 
     // Trade-in extraction
     let tradeInInfo = '';
@@ -224,6 +234,20 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
     if (tradeMatch && tradeMatch[1]) {
       tradeInInfo = tradeMatch[1].trim();
     }
+
+    // Build clear, human-readable executive notes from the chat
+    const keyUserQueries = allUserTexts.filter(t => t.length > 5 && !t.match(/^[0-9+()-\s]+$/));
+    const mainQuestion = keyUserQueries.length > 0 ? keyUserQueries[keyUserQueries.length - 1] : 'Consulta de inventario y financiamiento';
+
+    const noteItems: string[] = [];
+    if (isZeroDown) noteItems.push('Cliente solicita evaluar financiamiento con 0 pronto');
+    if (downPaymentVal) noteItems.push(`Pronto disponible: $${downPaymentVal.toLocaleString()}`);
+    if (tradeInInfo) noteItems.push(`Tiene Trade-in: ${tradeInInfo}`);
+    if (fullHistoryText.toLowerCase().includes('hibrid') || fullHistoryText.toLowerCase().includes('hybrid')) noteItems.push('Interesado específicamente en versión híbrida');
+    if (fullHistoryText.toLowerCase().includes('cita') || fullHistoryText.toLowerCase().includes('prueba')) noteItems.push('Interesado en prueba de manejo / cita');
+    noteItems.push(`Última consulta: "${mainQuestion}"`);
+
+    const structuredNotes = noteItems.join(' | ');
 
     if (phoneMatch || emailMatch) {
       try {
@@ -235,9 +259,10 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
             phone: phoneMatch ? phoneMatch[0] : '',
             email: emailMatch ? emailMatch[0] : '',
             vehicle: vehicleRef || 'Consulta General Barranquitas Mazda',
-            downPayment: downPaymentVal,
+            downPayment: isZeroDown ? 0 : downPaymentVal,
             tradeIn: tradeInInfo || undefined,
-            notes: `Conversación con Shakira: "${textToSend}"`,
+            notes: structuredNotes,
+            conversationSummary: `Preguntas del cliente: ${keyUserQueries.slice(-3).map(q => `"${q}"`).join(' -> ')}`,
             source: 'Chat Asesora Shakira'
           })
         }).catch(() => {});

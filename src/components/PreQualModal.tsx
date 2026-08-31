@@ -54,8 +54,8 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
           monthlyEstimate: estimatedMonthly,
           termMonths,
           tradeIn: hasTradeIn ? `Sí ($${tradeInValue.toLocaleString()})` : 'No',
-          source: 'Modal de Precalificación & Calculadora',
-          notes: `Pronto: $${downPayment.toLocaleString()} | Plazo: ${termMonths}m | Trade-In: ${hasTradeIn ? `$${tradeInValue.toLocaleString()}` : 'No'}`
+          source: 'Calculadora & Precalificación Web',
+          notes: `Cliente calculó corrida mensual en la web con pronto de $${downPayment.toLocaleString()} a ${termMonths} meses.`
         })
       });
     } catch (err) {
