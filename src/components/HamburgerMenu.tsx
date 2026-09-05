@@ -184,7 +184,7 @@ export function HamburgerMenu({
             >
               <div className="flex items-center gap-2.5">
                 <MessageSquare className="w-5 h-5 text-[#00FFFF]" />
-                <span className="group-hover:text-[#00FFFF] transition-colors">Hablar con Asesora Shakira</span>
+                <span className="group-hover:text-[#00FFFF] transition-colors">Asistente Virtual</span>
               </div>
               <span className="text-xs text-[#00FFFF] font-mono">[EN LÍNEA]</span>
             </button>

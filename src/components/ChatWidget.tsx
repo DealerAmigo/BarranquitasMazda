@@ -42,18 +42,6 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // 7-second delayed popup trigger for Shakira
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsOpen(prev => {
-        // Only open if user hasn't closed it manually yet
-        return prev ? prev : true;
-      });
-    }, 7000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -352,27 +340,70 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
     'Quiero cotizar con Trade-in'
   ];
 
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-5 right-5 z-40 bg-[#00FFFF] text-black px-5 py-3.5 border border-black shadow-none hover:bg-[#55FFFF] transition-all flex items-center gap-2.5 font-black text-sm uppercase cursor-pointer underline"
-      >
-        <MessageSquare className="w-5 h-5" />
-        <span>HABLAR CON SHAKIRA</span>
-      </button>
-    );
-  }
-
   return (
-    <div className={`fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-40 w-[94vw] sm:w-[420px] bg-[#000000] border border-[#333333] rounded overflow-hidden flex flex-col transition-all duration-200 car-card ${
-      isMinimized ? 'h-[58px]' : 'h-[560px] max-h-[88vh]'
-    }`}>
-      {/* Header */}
+    <>
+      {/* ALWAYS Render the Floating Bubble */}
+      <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end gap-3 pointer-events-none">
+        {/* Tooltip pointer (only show when closed) */}
+        {!isOpen && (
+          <div className="bg-[#000000] border border-[#333333] text-[#FFFFFF] px-4 py-2 rounded-lg text-xs font-bold shadow-2xl mr-2 relative animate-bounce pointer-events-auto">
+            ¿En qué te puedo ayudar?
+            <div className="absolute top-full right-4 w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-[#333333]"></div>
+          </div>
+        )}
+        
+        {/* Circular Floating Widget */}
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="relative group w-16 h-16 flex items-center justify-center cursor-pointer outline-none pointer-events-auto"
+        >
+          {/* Outer Ripple / Loader Effect */}
+          <div className="absolute inset-0 bg-[#00FFFF] rounded-full animate-ping opacity-20"></div>
+          
+          {/* Button Body */}
+          <div className="relative w-full h-full bg-[#000000] border-2 border-[#00FFFF] rounded-full flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105 shadow-[0_0_20px_rgba(0,255,255,0.3)]">
+            <img 
+              src="/shakira.png" 
+              alt="Shakira" 
+              className="w-full h-full object-cover" 
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                if (e.currentTarget.nextElementSibling) {
+                  (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'block';
+                }
+              }} 
+            />
+            <span className="text-[#00FFFF] font-black text-2xl hidden">S</span>
+          </div>
+          
+          {/* Notification Dot */}
+          {!isOpen && (
+            <span className="absolute top-0 right-0 w-4 h-4 bg-red-500 border-2 border-black rounded-full animate-pulse"></span>
+          )}
+        </button>
+      </div>
+
+      {/* Conditionally Render the Chat Window ABOVE the bubble */}
+      {isOpen && (
+        <div className={`fixed bottom-24 right-4 sm:right-5 z-40 w-[94vw] sm:w-[420px] bg-[#000000] border border-[#333333] rounded overflow-hidden flex flex-col transition-all duration-200 car-card ${
+          isMinimized ? 'h-[58px]' : 'h-[560px] max-h-[calc(100vh-120px)]'
+        }`}>
+          {/* Header */}
       <div className="bg-[#000000] px-4 py-3 border-b border-[#333333] flex items-center justify-between select-none">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#000000] border-2 border-[#00FFFF] flex items-center justify-center text-[#00FFFF] font-black text-sm">
-            S
+          <div className="w-8 h-8 rounded-full border-2 border-[#00FFFF] overflow-hidden flex-shrink-0 bg-[#111111] flex items-center justify-center">
+            <img 
+              src="/shakira.png" 
+              alt="Shakira" 
+              className="w-full h-full object-cover" 
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                if (e.currentTarget.nextElementSibling) {
+                  (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'block';
+                }
+              }}
+            />
+            <span className="text-[#00FFFF] font-black text-sm hidden">S</span>
           </div>
           <div>
             <div className="font-black text-sm sm:text-base text-white flex items-center gap-2 uppercase">
@@ -419,40 +450,41 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
                       : 'bg-[#111111] text-[#FFFFFF] border-l-2 border-[#00FFFF]'
                   }`}
                 >
-                  {/* Markdown and Links/Buttons renderer */}
+                  {/* Markdown renderer */}
                   {msg.text.split('\n').map((line, lIdx) => {
-                    // Check if line or text contains CognitoForms URL
-                    const hasCognitoForm = line.includes('cognitoforms.com/BarranquitasMazda1/SolicitudDeCr');
-                    const cleanLine = line.replace(/https:\/\/www\.cognitoforms\.com\/BarranquitasMazda1\/SolicitudDeCr%C3%A9dito/g, '').replace(/https:\/\/www\.cognitoforms\.com\/BarranquitasMazda1\/SolicitudDeCrédito/g, '').trim();
-
+                    // Remove the URL from the text so it doesn't show up raw
+                    const cleanLine = line
+                      .replace(/https:\/\/www\.cognitoforms\.com\/BarranquitasMazda1\/SolicitudDeCr%C3%A9dito/g, '')
+                      .replace(/https:\/\/www\.cognitoforms\.com\/BarranquitasMazda1\/SolicitudDeCrédito/g, '')
+                      .trim();
+                      
+                    if (!cleanLine) return null;
+                    
                     return (
-                      <div key={lIdx} className={lIdx > 0 ? 'mt-2' : ''}>
-                        {cleanLine && (
-                          <p>
-                            {cleanLine.split(/\*\*(.*?)\*\*/g).map((part, pIdx) => 
-                              pIdx % 2 === 1 ? <strong key={pIdx} className={msg.role === 'user' ? 'font-black' : 'text-[#00FFFF] font-bold'}>{part}</strong> : part
-                            )}
-                          </p>
+                      <p key={lIdx} className={lIdx > 0 ? 'mt-2' : ''}>
+                        {cleanLine.split(/\*\*(.*?)\*\*/g).map((part, pIdx) => 
+                          pIdx % 2 === 1 ? <strong key={pIdx} className={msg.role === 'user' ? 'font-black' : 'text-[#00FFFF] font-bold'}>{part}</strong> : part
                         )}
-                        
-                        {hasCognitoForm && (
-                          <div className="mt-3 pt-2 border-t border-[#333333]/80 flex flex-col gap-2">
-                            <a
-                              href="https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="w-full bg-[#00FFFF] hover:bg-[#55FFFF] text-black font-black text-xs uppercase px-3 py-2.5 rounded text-center transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer no-underline"
-                            >
-                              <span>🚀 Llenar Solicitud de Crédito Segura</span>
-                            </a>
-                            <div className="text-[11px] text-[#AAAAAA] text-center font-semibold">
-                              🔒 100% Segura • Sin impacto a tu puntuación al precalificar
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                      </p>
                     );
                   })}
+                  
+                  {/* Action Buttons rendered once at the bottom of the bubble */}
+                  {msg.text.includes('cognitoforms.com/BarranquitasMazda1/SolicitudDeCr') && (
+                    <div className="mt-3 pt-3 border-t border-[#333333] flex flex-col gap-2.5">
+                      <a
+                        href="https://www.cognitoforms.com/BarranquitasMazda1/SolicitudDeCr%C3%A9dito"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full bg-[#00FFFF] hover:bg-[#55FFFF] text-black font-black text-xs sm:text-[13px] uppercase px-3 py-3 rounded text-center transition-all flex items-center justify-center gap-1.5 shadow"
+                      >
+                        <span>🚀 Llenar Solicitud de Crédito</span>
+                      </a>
+                      <div className="text-[10px] sm:text-[11px] text-[#AAAAAA] text-center font-bold leading-tight">
+                        🔒 100% Segura • Sin impacto a tu crédito
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
@@ -509,6 +541,8 @@ export function ChatWidget({ externalTrigger }: ChatWidgetProps) {
           </div>
         </>
       )}
-    </div>
+        </div>
+      )}
+    </>
   );
 }

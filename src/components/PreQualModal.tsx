@@ -103,7 +103,7 @@ export function PreQualModal({ isOpen, onClose, selectedVehicle, onSuccess }: Pr
               <CheckCircle2 className="w-14 h-14 text-[#00FFFF] mx-auto animate-bounce" />
               <h3 className="text-xl font-black text-white">¡PRECALIFICACIÓN REGISTRADA!</h3>
               <p className="text-sm text-[#AAAAAA]">
-                Enviando los datos a nuestra Asesora Virtual Shakira para tu cotización...
+                Enviando los datos a nuestro sistema para tu cotización...
               </p>
             </div>
           ) : (

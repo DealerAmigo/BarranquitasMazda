@@ -143,15 +143,26 @@ export function ComparisonMatrix({ onAskComparison }: { onAskComparison: (model:
         </div>
 
         {/* Summary Footer */}
-        <div className="bg-[#000000] p-5 sm:p-6 rounded border border-[#333333] flex flex-col sm:flex-row items-center justify-between gap-5">
-          <div className="text-sm sm:text-base text-[#DDDDDD] font-normal leading-relaxed">
-            <strong className="text-[#00FFFF] block uppercase mb-1.5 font-black text-sm sm:text-base">Conclusión de Nuestra Asesora Shakira:</strong>
-            {currentComp.argument}
+        <div className="relative bg-[#0A0D10] p-6 sm:p-8 rounded-lg border border-[#222222] shadow-2xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 overflow-hidden">
+          {/* Subtle Accent Glow */}
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-[#00FFFF] to-transparent opacity-70"></div>
+          <div className="absolute -left-10 -top-10 w-32 h-32 bg-[#00FFFF] rounded-full mix-blend-screen filter blur-[80px] opacity-20"></div>
+
+          <div className="flex-1 text-left relative z-10 w-full">
+            <div className="flex items-center gap-2.5 mb-2">
+              <Sparkles className="w-4 h-4 text-[#00FFFF]" />
+              <strong className="text-[#00FFFF] uppercase font-bold tracking-[0.2em] text-[10px] sm:text-[11px]">
+                Conclusión de Inteligencia Artificial
+              </strong>
+            </div>
+            <p className="text-sm sm:text-[15px] text-[#D1D5DB] font-medium leading-relaxed max-w-4xl pr-0 lg:pr-8">
+              {currentComp.argument}
+            </p>
           </div>
 
           <button
             onClick={() => onAskComparison(activeTab)}
-            className="btn-ask-ai sm:w-auto px-6 sm:px-8 py-3.5 text-sm sm:text-base whitespace-nowrap shrink-0"
+            className="btn-ask-ai w-full lg:w-auto !px-4 !py-3.5 !text-xs sm:!text-sm tracking-wide shrink-0 relative z-10 flex items-center justify-center text-center leading-tight min-h-[50px] !whitespace-normal"
           >
             PREGÚNTAME SOBRE {activeTab}
           </button>

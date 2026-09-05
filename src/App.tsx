@@ -178,7 +178,7 @@ export default function App() {
                 ¿DESEAS COTIZAR CON TU PRONTO O TRADE-IN?
               </h3>
               <p className="text-sm text-[#AAAAAA] font-bold leading-relaxed">
-                Calcula tu pago mensual estimado al instante con la ayuda de nuestra ejecutiva virtual Shakira.
+                Calcula tu pago mensual estimado al instante con nuestra herramienta de precalificación.
               </p>
               <button
                 onClick={() => handleOpenPreQual()}
